@@ -1,0 +1,14 @@
+<html>
+    <script src="/js/swagger-client.js" type="text/javascript"></script>
+    <script>
+        var specUrl = 'http://192.168.123.72:1880/http-api/swagger.json';
+        var swaggerClient = new SwaggerClient(specUrl);
+        swaggerClient.then(client => console.log(client.apis))
+        swaggerClient
+            .then(({ apis }) => apis.furman.power({ seqno: 1 }))
+            .then(({ text }) => console.log(text))  
+    </script>
+    <body>
+
+    </body>
+</html>
