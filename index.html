@@ -1,14 +1,2709 @@
-<html>
-    <script src="/js/swagger-client.js" type="text/javascript"></script>
-    <script>
-        var specUrl = 'http://192.168.123.72:1880/http-api/swagger.json';
-        var swaggerClient = new SwaggerClient(specUrl);
-        swaggerClient.then(client => console.log(client.apis))
-        swaggerClient
-            .then(({ apis }) => apis.furman.watt({ seqno: 1 }))
-            .then(({ text }) => console.log(text))  
-    </script>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IBC Sanctuary AV Control</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/spectrum.min.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/spectrum.min.js"></script>
+    <script src="https://unpkg.com/swagger-client"></script>
+    
+    <style>
+        .btn-block + .btn-block {
+            margin-top: 0px;
+        }
+       
+        .btn-toolbar > .btn-group {
+            height:4rem;
+        }
 
-    </body>
+        body {
+            background-color: #101010;
+        }
+
+        .btn{
+            font-weight: bold;
+        }
+
+        .btn-default{
+            background-color:dimgray;
+            color:#eeeeee;
+        }
+
+        .btn-secondary {
+            background-color: #313131;
+            color: #cbcbcb;
+        }
+
+        .colrow {
+            padding: 3px;
+            height: 7rem;
+        }
+
+        .colrow:first-child {
+            padding-top: 3px;
+            margin-top: 3px;
+            height: 7rem;
+        }
+
+        .btn {
+            font-size: 1.5rem;
+            padding:3px;
+        }
+
+        .colrow > .col-md-4 {
+            border: 1px solid #101010;
+        }
+
+        .colrow > .col-md-3 {
+            border: 1px solid #101010;
+        }
+
+        .colrow > div {
+            text-align:center;
+            padding: 3px;
+        }
+
+        #secPowerFurman > .colrow {
+            padding: 3px;
+            height: 5rem;
+        }
+
+        /*
+        #pagePower > .colrow:first-child {
+            padding-top: 3px;
+            margin-top: 3px;
+            height: 6rem;
+        }
+ 
+        #pagePower > .row {
+            margin-top:5px;
+        }
+
+        #pagePower > .row > .col-md-6 {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+        */
+
+        .card-header {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .card-header > h5 {
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .card-body {
+            padding: 1rem 1.25rem;
+            padding-top: 0.5rem;
+        }
+
+        .card-body > .row > .col-sm-4 {
+            padding: 5px;
+        }
+
+        .card-body > .row > .col-sm-4 > .col-sm-6 {
+            max-width: 48%;
+        }
+
+        .btnBankInfo {
+            float: right;
+            cursor: pointer;
+        }
+
+        .card-header > h5 > .btn-outline-primary, #pagePower > .colrow > button > h4 > .btn-outline-primary {
+            border-width: 1px solid;
+            background-color: #eeeeee;
+        }
+
+        .card-header > h5 > .btn-outline-primary:hover, #pagePower > .colrow > button > h4 > .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        #btnSeqAllInfo {
+            cursor: pointer;
+        }
+
+        .btn-purple {
+            background-color: #6f42c1;
+        }
+
+        #secATEMMain FIELDSET {
+            display: block;
+            margin-inline-start: 2px;
+            margin-inline-end: 2px;
+            padding-inline-start: 0.75em;
+            padding-inline-end: 0.75em;
+            padding-block-end: 0.625em;
+            min-inline-size: min-content;
+            border-width: 2px;
+            border-style: groove;
+            border-color: threedface;
+            border-image: initial;
+        }
+
+        #secATEMMain FIELDSET LEGEND {
+            text-align: left;
+            padding-left: 6px;
+            font-size: 1.2em;
+            color:#fff;
+        }
+
+        #secATEMMain BUTTON, #secATEMKeyer BUTTON {
+            margin-left:2px;
+            margin-right:2px;
+            font-size: 1em;
+        }
+
+        #secATEMMain .row > div, #secATEMMain .row {
+            padding-right: 0px;
+            padding-top: 3px;
+        }
+
+        #secATEMMain .row > div:last-child {
+            padding-right: 15px;
+        }
+
+        #secATEMMain .row > div:first-child {
+            padding-left: 15px;
+        }
+
+        #secATEMMain input, #secATEMKeyer input  {
+            padding-left: 3px;
+            padding-right: 3px;
+            text-align:center;
+        }
+
+        #secATEMMain .row:nth-child(3) .btn-toolbar > .btn-group, #secATEMKeyer .btn-toolbar > .btn-group {
+            height: 2rem;
+        }
+
+        #secATEMKeyer .row, #secATEMMacro .row:last-child {
+            padding-top:12px;
+        }
+
+        #secATEMKeyer .row .col-lg-3 {
+            padding-right:0px;
+        }
+
+        #secATEMKeyer .row .col-lg-3:last-child {
+            padding-right:15px;
+        }
+
+        #secATEMKeyer .card-header .col-sm-6:last-child {
+            text-align:right;
+        }
+
+        #secATEMKeyer .card-header .row {
+            padding-top:0px;
+        }
+
+        #secATEMKeyer .card form label {
+            padding-top:0px;
+            padding-bottom:0px;
+        }
+
+        #secATEMKeyer .card form .row {
+            padding-top:0px;
+        }
+
+        #secATEMKeyer .card form select {
+            width:100%;
+        }
+
+        #secATEMKeyer .form-check, #secATEMKeyer .form-group {
+            margin-bottom:8px;
+        }
+
+        #secATEMKeyer .card-body {
+            height: 28.5rem;
+            overflow-y: auto;
+        }
+
+        .ATEMKeyRunToInfiteRow button img {
+            height: 16px;
+            width: 16px;
+        }
+
+        svg {
+            fill: #fff !important;
+            height: 1em;
+            width: 1em;
+        }
+
+        #secATEMMacro .row:first-child .btn-toolbar > .btn-group {
+            height:7.5rem;
+        }
+
+        #rowInputsATEM, #rowDestinationATEM {
+            height:17rem;
+        }
+
+        #rowInputsATEM > div , #rowDestinationATEM > div {
+            border: 1px solid #fff;
+        }
+
+    </style>
+</head>
+<body ng-app="AVControlWeb" ng-controller="VCWSController">
+    <div id="navMain" class="container-fluid">
+        <div class="row">
+            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Main');" id="btnMenuMain">Main</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Display');" id="btnMenuDisplay">Display</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('VideoRouting');" id="btnMenuVideoRouting">Routing</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Power');" id="btnMenuPower">Power</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Lights');" id="btnMenuLights">Lights</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('ATEM');" id="btnMenuATEM">ATEM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageMain" class="container-fluid">
+        <!-- AVSystemON -->
+        <div class="row colrow">
+            <button class="btn btn-success col-md-2" ng-click="VControlWS.scrRunTask('AVSystemON')">ON</button>
+            <div class="btn-default col-md-5" ><h4>AV Systems</h4><h3><span id="txtSystemStatus" class="badge badge-danger">{PWR_STATUS}</span></h3></div>
+            <button class="btn btn-danger col-md-2" ng-click="VControlWS.scrRunTask('AVSystemOFF')">OFF</button>
+            <button class="btn btn-info col-md-3" ng-click="VControlWS.scrRunTask('SundayServiceNormal')" >Service Display</button>
+        </div>
+        <div class="row colrow">
+            <button class="btn btn-warning col-md-3" ng-click="ScreenControl(Screen_Type.LPROJSCR,Screen_Cmd.UP);ScreenControl(Screen_Type.RPROJSCR,Screen_Cmd.UP);">Screen UP</button>
+            <button class="btn btn-success col-md-3" ng-click="VControlWS.scrRunTask('WEM')">System On<br /><b>BSF / WEM</b></button>
+            <button class="btn btn-success col-md-3" ng-click="VControlWS.scrRunTask('ESL')">System On<br /><b>ESL</b></button>
+            <button class="btn btn-info col-md-3" ng-click="VControlWS.scrRunTask('Baptism')">Baptism Display</button>
+        </div>
+        <div class="row colrow">
+            <button class="btn btn-warning col-md-3" ng-click="ScreenControl(Screen_Type.LPROJSCR,Screen_Cmd.DOWN);ScreenControl(Screen_Type.RPROJSCR,Screen_Cmd.DOWN);">Screen DOWN</button>
+            <button class="btn btn-info col-md-3" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJLEFT);videoRouting(Video_Input.CAM,Video_Output.PROJRIGHT);">CAM to Projectors</button>
+            <button class="btn btn-info col-md-3" ng-click="videoRouting(Video_Input.PC1,Video_Output.PROJLEFT);videoRouting(Video_Input.PC1,Video_Output.PROJRIGHT);">PC1 to Projectors</button>
+            <button class="btn btn-info col-md-3" ng-click="videoRouting(Video_Input.PC2,Video_Output.PROJLEFT);videoRouting(Video_Input.PC2,Video_Output.PROJRIGHT);">PC2 to Projectors</button>
+        </div>
+        <div class="row colrow">
+            <button class="btn btn-info btn-purple col-md-3" ng-click="SancLightControl(Lights_Cmd.ALLON);">LIGHTS ON</button>
+            <button class="btn btn-info btn-purple col-md-3" ng-click="SancLightControl(Lights_Cmd.ALLOFF);">LIGHTS OFF</button>
+            <button class="btn btn-info btn-purple col-md-3" ng-click="SancLightControl(Lights_Cmd.FRONTDIM);SancLightControl(Lights_Cmd.BACKDIM);">Full Dim</button>
+            <button class="btn btn-info btn-purple col-md-3" ng-click="SancLightControl(Lights_Cmd.FRONTDIM);">Front Dim</button>
+        </div>
+    </div>
+
+    <div id="pageDisplay" class="container-fluid">
+        <div class="row">
+            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showDisplayOutputPanel('Projectors');" id="DisplayButtonProjectors">Proj/Stage/Mezz</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showDisplayOutputPanel('Screen');" id="DisplayButtonScreen">Screen/Windows</button>
+                </div>
+            </div>
+        </div>
+        <div id="DisplayPageProjectors" >
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Left Projector -->
+                    <div class="row colrow">
+                        <button class="btn btn-success col-sm-3" ng-click="Projector(devices.ProjLEFT,'POWER','ON')">ON</button>
+                        <div class="btn-default col-sm-6">
+                            <h4>Proj. LEFT</h4>
+                            <span id="txtProjLPWR" class="badge badge-danger">POWER</span>
+                            <span id="txtProjLLampHrs" class="badge badge-primary">LHrs</span><br />
+                            <span id="txtProjLSource" class="badge badge-primary">SOURCE</span>
+                        </div>
+                        <button class="btn btn-danger col-sm-3" ng-click="Projector(devices.ProjLEFT,'POWER','OFF')">OFF</button>
+                    </div>
+
+                    <!-- Right Projector -->
+                    <div class="row colrow">
+                        <button class="btn btn-success col-sm-3" ng-click="Projector(devices.ProjRIGHT,'POWER','ON')">ON</button>
+                        <div class="btn-default col-sm-6">
+                            <h4>Proj. RIGHT</h4>
+                            <span id="txtProjRPWR" class="badge badge-danger">POWER</span>
+                            <span id="txtProjRLampHrs" class="badge badge-primary">LHrs</span><br />
+                            <span id="txtProjRSource" class="badge badge-primary">SOURCE</span>
+                        </div>
+                        <button class="btn btn-danger col-sm-3" ng-click="Projector(devices.ProjRIGHT,'POWER','OFF')">OFF</button>
+                    </div>
+
+                    <!-- Left & Right Projectors -->
+                    <div class="row colrow">
+                        <button class="btn btn-success col-sm-3" ng-click="Projector(devices.ProjRIGHT,'POWER','ON');Projector(devices.ProjLEFT,'POWER','ON');">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">PROJECTORS</button>
+                        <button class="btn btn-danger col-sm-3" ng-click="Projector(devices.ProjRIGHT,'POWER','OFF');Projector(devices.ProjLEFT,'POWER','OFF');">OFF</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row colrow">
+                        <!-- Stage Sides -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">STAGE SIDE</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+
+                    <div class="row colrow">
+                        <!-- Stage Sides -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">STAGE<br/ >CENTER</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+
+                    <div class="row colrow">
+                        <!-- Stage Center -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">STAGE TVs</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row colrow">
+                        <!-- Mezz 1 -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">MEZZ 1</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+
+                    <div class="row colrow">
+                        <!-- Mezz 2 -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">MEZZ 2</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+
+                    <div class="row colrow">
+                        <!-- Mezz 3 -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">MEZZ 3</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+
+                    <div class="row colrow">
+                        <!-- Mezz 4 -->
+                        <button class="btn btn-success col-sm-3">ON</button>
+                        <button class="btn btn-default col-sm-6" disabled="disabled">MEZZ 4</button>
+                        <button class="btn btn-danger col-sm-3">OFF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="DisplayPageScreen" >
+            <div class="row colrow">
+                <button class="btn col-md-3 btn-default" disabled>Left Projector<br />Screen</button>
+                <button class="btn col-md-3 btn-default" disabled>Right Projector<br /> Screen</button>
+                <button class="btn col-md-3 btn-default" disabled>Left Window<br />Blind</button>
+                <button class="btn col-md-3 btn-default" disabled>Right Window<br />Blind</button>
+            </div>
+            <div class="row colrow">
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.LPROJSCR,Screen_Cmd.UP)" id="dispLPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.RPROJSCR,Screen_Cmd.UP)" id="dispRPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.LWINSCR,Screen_Cmd.UP)" id="dispLWINSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.RWINSCR,Screen_Cmd.UP)" id="dispRWINSCRUP" >UP</button>
+            </div>
+            <div class="row colrow">
+                <button class="btn col-md-3 btn-danger" ng-click="ScreenControl(Screen_Type.LPROJSCR,Screen_Cmd.STOP)" >STOP</button>
+                <button class="btn col-md-3 btn-danger" ng-click="ScreenControl(Screen_Type.RPROJSCR,Screen_Cmd.STOP)" >STOP</button>
+                <button class="btn col-md-3 btn-danger" ng-click="ScreenControl(Screen_Type.LWINSCR,Screen_Cmd.STOP)" >STOP</button>
+                <button class="btn col-md-3 btn-danger" ng-click="ScreenControl(Screen_Type.RWINSCR,Screen_Cmd.STOP)" >STOP</button>
+            </div>
+            <div class="row colrow">
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.LPROJSCR,Screen_Cmd.DOWN)" id="dispLPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.RPROJSCR,Screen_Cmd.DOWN)" id="dispRPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.LWINSCR,Screen_Cmd.DOWN)" id="dispLWINSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info" ng-click="ScreenControl(Screen_Type.RWINSCR,Screen_Cmd.DOWN)" id="dispRWINSCRDOWN" >DOWN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageVideoRouting" class="container-fluid">
+        <div class="row">
+            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showVideoOuputPanel('Favorites')" id="VRmenuFavorites">Favorites</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showVideoOuputPanel('PC1')" id="VRmenuPC1">PC1</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showVideoOuputPanel('PC2')" id="VRmenuPC2">PC2</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showVideoOuputPanel('CAM')" id="VRmenuCAM">CAM</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showVideoOuputPanel('DVD')" id="VRmenuDVD">DVD</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="secPageVideoFavorites">
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('CAM')">CAM to All</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('PC1')">PC1 to All</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('PC2')">PC2 to All</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('SundayServiceNormal')">Service Display</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('SundayServiceOptional1')">Baptism Display</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="VControlWS.scrRunTask('SundayServiceOptional2')">Sunday Service 2</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJLEFT);videoRouting(Video_Input.CAM,Video_Output.PROJRIGHT);">CAM to Projectors</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC1,Video_Output.PROJLEFT);videoRouting(Video_Input.PC1,Video_Output.PROJRIGHT);">PC1 to Projectors</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC2,Video_Output.PROJLEFT);videoRouting(Video_Input.PC2,Video_Output.PROJRIGHT);">PC2 to Projectors</button>
+            </div>
+        </div>
+
+        <div id="secPageVideoPC1" >
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC1PROJLEFT" ng-click="videoRouting(Video_Input.PC1,Video_Output.PROJLEFT);">ProjLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC1,Video_Output.PROJLEFT);videoRouting(Video_Input.PC1,Video_Output.PROJRIGHT);">PROJECTORS</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC1PROJRIGHT" ng-click="videoRouting(Video_Input.PC1,Video_Output.PROJRIGHT);">ProjRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC1UMEZZLEFT" ng-click="videoRouting(Video_Input.PC1,Video_Output.UMEZZLEFT);">MezzLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC1,Video_Output.UMEZZLEFT);videoRouting(Video_Input.PC1,Video_Output.UMEZZRIGHT);">MEZZANINE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC1UMEZZRIGHT" ng-click="videoRouting(Video_Input.PC1,Video_Output.UMEZZRIGHT);">MezzRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC1STAGESIDE" ng-click="videoRouting(Video_Input.PC1,Video_Output.STAGESIDE);">StageSIDES</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC1,Video_Output.STAGESIDE);videoRouting(Video_Input.PC1,Video_Output.STAGECENTER);">STAGE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC1STAGECENTER" ng-click="videoRouting(Video_Input.PC1,Video_Output.STAGECENTER)">StageCENTER</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-danger btn-lg col-md-12" ng-click="VControlWS.scrRunTask('PC1')">ALL DISPLAYS</button>
+            </div>
+        </div>
+
+        <div id="secPageVideoPC2" >
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC2PROJLEFT" ng-click="videoRouting(Video_Input.PC2,Video_Output.PROJLEFT);">ProjLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC2,Video_Output.PROJLEFT);videoRouting(Video_Input.PC2,Video_Output.PROJRIGHT);">PROJECTORS</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC2PROJRIGHT" ng-click="videoRouting(Video_Input.PC2,Video_Output.PROJRIGHT);">ProjRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC2UMEZZLEFT" ng-click="videoRouting(Video_Input.PC2,Video_Output.UMEZZLEFT);">MezzLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC2,Video_Output.UMEZZLEFT);videoRouting(Video_Input.PC2,Video_Output.UMEZZRIGHT);">MEZZANINE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC2UMEZZRIGHT" ng-click="videoRouting(Video_Input.PC2,Video_Output.UMEZZRIGHT);">MezzRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routePC2STAGESIDE" ng-click="videoRouting(Video_Input.PC2,Video_Output.STAGESIDE);">StageSIDES</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.PC2,Video_Output.STAGESIDE);videoRouting(Video_Input.PC2,Video_Output.STAGECENTER);">STAGE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routePC2STAGECENTER" ng-click="videoRouting(Video_Input.PC2,Video_Output.STAGECENTER);">StageCENTER</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-danger btn-lg col-md-12" ng-click="VControlWS.scrRunTask('PC2')">ALL DISPLAYS</button>
+            </div>
+        </div>
+
+        <div id="secPageVideoCAM" >
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMPROJLEFT" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJLEFT)">ProjLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJLEFT);videoRouting(Video_Input.CAM,Video_Output.PROJRIGHT);">PROJECTORS</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMPROJRIGHT" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJRIGHT)">ProjRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMUMEZZLEFT" ng-click="videoRouting(Video_Input.CAM,Video_Output.UMEZZLEFT);">MezzLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.CAM,Video_Output.UMEZZLEFT);videoRouting(Video_Input.CAM,Video_Output.UMEZZRIGHT);">MEZZANINE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMUMEZZRIGHT" ng-click="videoRouting(Video_Input.CAM,Video_Output.UMEZZRIGHT);">MezzRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMSTAGESIDE" ng-click="videoRouting(Video_Input.CAM,Video_Output.STAGESIDE);">StageSIDES</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.CAM,Video_Output.STAGESIDE);videoRouting(Video_Input.CAM,Video_Output.STAGECENTER);">STAGE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMSTAGECENTER" ng-click="videoRouting(Video_Input.CAM,Video_Output.STAGECENTER);">StageCENTER</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMWELCENTER" ng-click="videoRouting(Video_Input.CAM,Video_Output.WELCENTER);">Welcome Center</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.CAM,Video_Output.WELCENTER);videoRouting(Video_Input.CAM,Video_Output.RECOUT)">ALL REC.</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeCAMRECOUT" ng-click="videoRouting(Video_Input.CAM,Video_Output.RECOUT);">Rec. Out</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-danger btn-lg col-md-12" ng-click="VControlWS.scrRunTask('CAM')">ALL DISPLAYS</button>
+            </div>
+        </div>
+
+        <div id="secPageVideoDVD">
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDPROJLEFT" ng-click="videoRouting(Video_Input.DVD,Video_Output.PROJLEFT)" >ProjLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.DVD,Video_Output.PROJLEFT);videoRouting(Video_Input.DVD,Video_Output.PROJRIGHT);">PROJECTORS</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDPROJRIGHT" ng-click="videoRouting(Video_Input.CAM,Video_Output.PROJRIGHT)" >ProjRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDUMEZZLEFT" ng-click="videoRouting(Video_Input.DVD,Video_Output.UMEZZLEFT);" >MezzLEFT</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.DVD,Video_Output.UMEZZLEFT);videoRouting(Video_Input.DVD,Video_Output.UMEZZRIGHT);">MEZZANINE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDUMEZZRIGHT" ng-click="videoRouting(Video_Input.CAM,Video_Output.UMEZZRIGHT);" >MezzRIGHT</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDSTAGESIDE" ng-click="videoRouting(Video_Input.DVD,Video_Output.STAGESIDE);" >StageSIDES</button>
+                <button type="button" class="btn btn-info col-md-4" ng-click="videoRouting(Video_Input.DVD,Video_Output.STAGESIDE);videoRouting(Video_Input.DVD,Video_Output.STAGECENTER);" >STAGE</button>
+                <button type="button" class="btn btn-info col-md-4" id="routeDVDSTAGECENTER" ng-click="videoRouting(Video_Input.DVD,Video_Output.STAGECENTER);" >StageCENTER</button>
+            </div>
+
+            <div class="row colrow">
+                <button type="button" class="btn btn-danger col-md-12" ng-click="VControlWS.scrRunTask('DVD')">ALL DISPLAYS</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pagePower" class="container-fluid">
+        <div class="row">
+            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPowerPanel('Furman')" id="PowerMenuFurman">Furman</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPowerPanel('IOT')" id="PowerMenuIOT">Hoobs \IOT</button>
+                </div>
+            </div>
+        </div>
+        <div id="secPowerFurman">
+            <div class="row colrow">
+                <button class="btn btn-success col-md-3" ng-click="powerSequencer('SEQ_ON','','')">ON</button>
+                <button class="btn btn-default col-md-6">
+                    <h4>POWER SEQUENCER&nbsp;&nbsp;<span class="badge btn-outline-primary" id="btnSeqAllInfo" ng-click="ShowAllBankInfoDisplay();" >Bank Info</span></h4>
+                </button>
+                <button class="btn btn-danger col-md-3" ng-click="powerSequencer('SEQ_OFF','','')">OFF</button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 1</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq0AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq0WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq0Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq0Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>GLD/A.Rack/Scr</h5>
+                                    </div>        
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',0,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',0,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq0Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>W.Mic/Proj/S.TV</h5>
+                                    </div>        
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',0,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',0,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq0Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>U.Mezz TVs</h5>
+                                    </div>        
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',0,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',0,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 2</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq1AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq1WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq1Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq1Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Stg.Light Ctrl</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',1,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',1,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq1Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Cam Converter</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',1,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',1,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq1Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Cam/ATEM Ctrl</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',1,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',1,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 3</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq2AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq2WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq2Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq2Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>VHub/Atem</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',2,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',2,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq2Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Interpreter Wifi</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',2,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',2,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq2Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>---</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',2,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',2,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 4</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq3AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq3WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq3Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq3Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. Ctrl</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',3,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',3,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq3Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. Sides</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',3,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',3,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq3Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. Cluster</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',3,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',3,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 5</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq4AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq4WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq4Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq4Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. Subs</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',4,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',4,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq4Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. Delay</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',4,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',4,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq4Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Spk. UMezz</h5>
+                                    </div>    
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',4,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',4,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5>
+                                <b>Sequencer 6</b>&nbsp;&nbsp;&nbsp;
+                                <span class="badge badge-warning" id="txtSeq5AMP">{AMPS}</span>&nbsp;
+                                <span class="badge badge-warning" id="txtSeq5WATT">{WATTS}</span>
+                                <span class="badge btn-outline-primary btnBankInfo" id="btnSeq5Info" ng-click="BankInfoDisplay($event.currentTarget)">Bank Info</span>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 1&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq5Bank1">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Mon1/Mon2</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',5,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',5,1);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 2&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq5Bank2">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>Mon3/Mon4</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',5,2);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',5,2);" >OFF</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="SeqBankStatus" >
+                                        <h5>Bank 3&nbsp;&nbsp;<span class="badge badge-danger" id="txtSeq5Bank3">{PWR}</span></h5>
+                                    </div>
+                                    <div class="SeqBankName" style="display:none">
+                                        <h5>---</h5>
+                                    </div>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_ON',5,3);" >ON</button>
+                                    <button class="btn btn-info col-sm-6" ng-click="powerSequencer('Bank_OFF',5,3);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="secPowerIOT">
+            <div class="row colrow">
+                <div class="col-md-4">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5><b>Piano Mons</b></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',2,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',2,0);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5><b>Stage Left Power</b></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',3,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',3,0);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-header">
+                            <h5><b>Stage Right Power</b></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',4,1);" >ON</button>
+                                    <button class="btn btn-info col-sm-5" ng-click="powerIOT('SWITCH_9',4,0);" >OFF</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pageLights" class="container-fluid">
+        <div class="row colrow">
+            <button class="btn btn-success col-md-4" ng-click="SancLightControl(Lights_Cmd.ALLON);" >ALL ON</button>
+            <button class="btn btn-danger col-md-4" ng-click="SancLightControl(Lights_Cmd.ALLOFF);" >ALL OFF</button>
+            <button class="btn btn-warning col-md-4" ng-click="SancLightControl(Lights_Cmd.FRONTDIM);SancLightControl(Lights_Cmd.BACKDIM);">Full DIM</button>
+        </div>
+        <div class="row colrow">
+            <button class="btn btn-info col-md-3" ng-click="SancLightControl(Lights_Cmd.FRONTDIM);">Front Dim</button>
+            <button class="btn btn-info col-md-3" ng-click="SancLightControl(Lights_Cmd.BACKDIM);">Back Dim</button>
+			<button class="btn btn-info col-md-3" ng-click="SancLightControl(Lights_Cmd.MEZZANINE);">Mezzanine</button>
+        </div>
+    </div>
+
+    <div id="pageATEM" class="container-fluid" >
+        <div id="DisplayATEMNotAvailable" >
+            <div class="row colrow">
+                <button class="btn btn-default col-md-12">
+                    <!-- <button class="btn btn-success col-md-4" ng-click="ATEMtest();" >ATEM Test</button> -->
+                    <h2>ATEM is not Available. Please ensure that device is on.</h2>
+                </button>
+            </div>
+        </div>
+        <div id="DisplayATEMControlPanel">
+            <div class="row">
+                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                        <div class="btn-default col-lg-6" style="padding-top:6px;">
+                            ATEM Model: {Product Identification}</br>
+                            API Version: {API Version}&nbsp;&nbsp;&nbsp;Model: {Model}
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMPanel('Macro')" id="ATEMMainMenuMacro">Macro</button>
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMPanel('Aux')" id="ATEMMainMenuAux">Aux</button>
+                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMPanel('Keyer')" id="ATEMMainMenuKeyer">Keys</button>
+                    </div>
+                </div>
+            </div>
+            <div id="secATEMMain">
+                <div class="row">
+                    <div class="col-md-7">
+                        <fieldset>
+                            <legend>Transistion</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransBackground">BKGD</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransKey1">KEY 1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransKey2">KEY 2</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransKey3">KEY 3</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransKey4">KEY 4</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransDSK1">DSK 1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransDSK2">DSK 2</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-5">
+                        <fieldset>
+                            <legend>Transistion Style</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransStyleMix">MIX</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransStyleDip">DIP</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransStyleWipe">WIPE</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransStyleSting">STING</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMTransStyleDVE">DVE</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>Inputs</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput1">CAM1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput2">CAM2</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput3">CAM3</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput4">CAM4</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput5">CAM5</button>
+                                </div>
+                            </div>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput6">CAM6</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput7">CAM7</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput8">CAM8</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput9">CAM9</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInput10">CAM10</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-3">
+                        <fieldset>
+                            <legend>Color / Media</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputBlk">BLK</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputMP1">MP1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputMP2">MP2</button>
+                                </div>
+                            </div>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputBars">Bars</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputCol1">Col1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMInputCol2">Col2</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-lg-3">
+                        <fieldset>
+                            <legend>Key / DSK</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirKEY1">Key 1</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirKEY2">Key 2</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirDSK1">DSK 1</button>
+                                </div>
+                            </div>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirKEY3">Key 3</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirKEY4">Key 4</button>
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMOnAirDSK2">DSK 2</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row" >
+                    <!-- Horizontal slider / Auto Fade Timmer / Fade to Black -->
+                    <div class="col-md-6">
+                        <fieldset>
+                            <legend>Transition Position</legend>
+                            <input type="range" class="custom-range my-2 w-100" id="ATEMTransitionPosition">
+                        </fieldset>
+                    </div>
+                    <div class="col-md-3">
+                        <fieldset>
+                            <legend>Fade Timer</legend>
+                            <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMFadeTimeUP">UP</button>
+                                    <input type="text" class="col-sm-4" id="ATEMFadeTime" value="1.00s" />
+                                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMFadeTimeDOWN">DOWN</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-3">
+                        <fieldset>
+                            <legend>Fade To Black</legend>
+                                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                        <input type="text" class="col-sm-6" id="ATEMFadeToBlackTime" value="1.00s" />
+                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMFadeToBlack">FADE</button>
+                                    </div>
+                                </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row colrow" style="margin-top:6px;">
+                    <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMCutHold">Cut Hold</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMCut">Cut</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMAuto">Auto</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="secATEMKeyer">
+                <div class="row" id="secPageATEMKey">
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        Key 1
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select name="" id="ATEMKey1Mode">
+                                            <option value="">Luma</option>
+                                            <option value="">Chroma</option>
+                                            <option value="">Pattern</option>
+                                            <option value="">DVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body overflow-auto">
+                                <h5 class="card-title">Settings</h5>
+                                <form>
+                                    <div class="form-group row" id="ATEMKey1RowFill">
+                                        <label for="ATEMKey1FillSource" class="col-sm-4 col-form-label">Fill</label>
+                                        <div class="col-sm-8">
+                                            <select id="ATEMKey1FillSource"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="ATEMKey1RowCut">
+                                        <label for="ATEMKey1CutSource" class="col-sm-4 col-form-label">Key</label>
+                                        <div class="col-sm-8">
+                                            <select id="ATEMKey1CutSource"></select>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageLuma">
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1PMKEnable" id="ATEMKey1PMKEnable" value="" >
+                                              Pre Multiplied Key
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1PMKClip" >Clip:</label>
+                                                <input type="text" name="form-control" class="col-sm-12" id="ATEMKey1PMKClip" value="10"/>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1PMKGain" >Gain:</label>
+                                                <input type="text" name="form-control" class="col-sm-12" id="ATEMKey1PMKGain" value="10"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="checkbox" class="form-check-input" name="ATEMKey1PMKInvert" id="ATEMKey1PMKInvert" value="" >
+                                              Invert Key
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageMask">
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1MaskEnable" id="ATEMKey1MaskEnable" value="" >
+                                              Mask
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskTop" class="col-form-label">Top:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1MaskTop" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskBottom" class="col-form-label">Bottom:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1MaskBottom" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskLeft" class="col-form-label">Left:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1MaskLeft" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskRight" class="col-form-label">Right:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1MaskRight" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageChroma">
+                                        <hr />
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1ChromaHue" class="col-form-label">Hue:</label><br />
+                                                <input type="range" id="ATEMKey1ChromaHue" class="col-sm-8" min="0" max="359.9" step="0.1"/>
+                                                <input type="text" id="ATEMKey1ChromaHueText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1ChromaGain" class="col-form-label">Gain:</label><br />
+                                                <input type="range" id="ATEMKey1ChromaGain" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1ChromaGainText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1ChromaYSuppress" class="col-form-label">Y Suppress:</label>
+                                                <input type="range" id="ATEMKey1ChromaYSuppress" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1ChromaYSuppressText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1ChromaLift" class="col-form-label">Lift:</label><br />
+                                                <input type="range" id="ATEMKey1ChromaLift" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1ChromaLiftText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="checkbox" class="form-check-input" name="ATEMKey1ChromaNarrow" id="ATEMKey1ChromaNarrow" value="" >
+                                              Narrow Chroma Key Range
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PagePattern">
+                                        <div class="form-row" >
+                                            <div class="form-group col-sm-12">
+                                                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape1">
+                                                            <svg><use xlink:href="#atem-pattern-1"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape2">
+                                                            <svg><use xlink:href="#atem-pattern-2"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape3">
+                                                            <svg><use xlink:href="#atem-pattern-3"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape4">
+                                                            <svg><use xlink:href="#atem-pattern-4"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape5">
+                                                            <svg><use xlink:href="#atem-pattern-5"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape6">
+                                                            <svg><use xlink:href="#atem-pattern-6"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape7">
+                                                            <svg><use xlink:href="#atem-pattern-7"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape8">
+                                                            <svg><use xlink:href="#atem-pattern-8"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape9">
+                                                            <svg><use xlink:href="#atem-pattern-9"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape10">
+                                                            <svg><use xlink:href="#atem-pattern-10"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape11">
+                                                            <svg><use xlink:href="#atem-pattern-11"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape12">
+                                                            <svg><use xlink:href="#atem-pattern-12"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape13">
+                                                            <svg><use xlink:href="#atem-pattern-13"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape14">
+                                                            <svg><use xlink:href="#atem-pattern-14"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape15">
+                                                            <svg><use xlink:href="#atem-pattern-15"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape16">
+                                                            <svg><use xlink:href="#atem-pattern-16"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape17">
+                                                            <svg><use xlink:href="#atem-pattern-17"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1PatternShape18">
+                                                            <svg><use xlink:href="#atem-pattern-18"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="checkbox" class="form-check-input" name="ATEMKey1PatternInvert" id="ATEMKey1PatternInvert" value="" >
+                                              Invert Pattern
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1PatternSize" class="col-form-label">Size:</label><br />
+                                                <input type="range" id="ATEMKey1PatternSize" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1PatternSizeText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1PatternSymmetry" class="col-form-label">Symmetry:</label>
+                                                <input type="range" id="ATEMKey1PatternSymmetry" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1PatternSymmetryText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1PatternSoftness" class="col-form-label">Softness:</label>
+                                                <input type="range" id="ATEMKey1PatternSoftness" class="col-sm-8" min="0" max="100" step="0.1"/>
+                                                <input type="text" id="ATEMKey1PatternSoftnessText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1PatternPosX" class="col-form-label">Pos. X:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1PatternPosX" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1PatternPosY" class="col-form-label">Pos. Y:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1PatternPosY" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageFlyEnable">
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1FlyEnable" id="ATEMKey1FlyEnable" value="" >
+                                              Flying Key
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageFlyDVEFrame">
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyPosX" class="col-form-label">Pos X:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyPosX" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyPosY" class="col-form-label">Pos Y:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyPosY" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyWidth" class="col-form-label">Width:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyWidth" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyHeight" class="col-form-label">Height:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyHeight" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyWidth" class="col-form-label">Width:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyWidth" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyHeight" class="col-form-label">Height:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyHeight" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1FlyRot" class="col-form-label">Rotation:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyRot" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageDVE">
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1DVEMaskEnable" id="ATEMKey1DVEMaskEnable" value="" >
+                                              Mask
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskTop" class="col-form-label">Top:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEMaskTop" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskBottom" class="col-form-label">Bottom:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEMaskBottom" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskLeft" class="col-form-label">Left:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEMaskLeft" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1MaskRight" class="col-form-label">Right:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEMaskRight" />
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1DVEShadowEnable" id="ATEMKey1DVEShadowEnable" value="" >
+                                              Shadow
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1DVEShadowDirection" class="col-form-label">Direction:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEShadowDirection" />
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="ATEMKey1DVEShadowAltitude" class="col-form-label">Altitude:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEShadowAltitude" />
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                              <input type="radio" class="form-check-input" name="ATEMKey1DVEBorderEnable" id="ATEMKey1DVEBorderEnable" value="" >
+                                              Border
+                                            </label>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderColor" class="col-form-label">Color:</label>
+                                                <input id="ATEMKey1DVEBorderColor" class="col-sm-2" value='#ffffff' />
+                                            </div>
+                                        </div>  
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-4">
+                                                <label for="ATEMKey1DVEBorderColorHue" class="col-form-label">Hue:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEBorderColorHue" readonly />
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="ATEMKey1DVEBorderColorSat" class="col-form-label">Sat:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEBorderColorSat" readonly />
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="ATEMKey1DVEBorderColorLum" class="col-form-label">Lum:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1DVEBorderColorLum" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" >
+                                            <label for="ATEMKey1DVEBorderStyle" class="col-sm-4 col-form-label">Style</label>
+                                            <div class="col-sm-8">
+                                                <select id="ATEMKey1DVEBorderStyle">
+                                                    <option value="0">No Bevel</option>
+                                                    <option value="1">Bevel In Out</option>
+                                                    <option value="2">Bevel In</option>
+                                                    <option value="3">Bevel Out</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderOuterWidth" class="col-form-label">Outer Width:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderOuterWidth" class="col-sm-8" min="0" max="16" step="0.01"/>
+                                                <input type="text" id="ATEMKey1DVEBorderOuterWidthText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderInnerWidth" class="col-form-label">Inner Width:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderInnerWidth" class="col-sm-8" min="0" max="16" step="0.01"/>
+                                                <input type="text" id="ATEMKey1DVEBorderInnerWidthText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderOuterSoften" class="col-form-label">Outer Soften:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderOuterSoften" class="col-sm-8" min="0" max="100" step="1"/>
+                                                <input type="text" id="ATEMKey1DVEBorderOuterSoftenText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderInnerSoften" class="col-form-label">Inner Soften:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderInnerSoften" class="col-sm-8" min="0" max="100" step="1"/>
+                                                <input type="text" id="ATEMKey1DVEBorderInnerSoftenText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderOpacity" class="col-form-label">Border Opacity:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderOpacity" class="col-sm-8" min="0" max="100" step="1"/>
+                                                <input type="text" id="ATEMKey1DVEBorderOpacityText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderBevelPosition" class="col-form-label">Bevel Position:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderBevelPosition" class="col-sm-8" min="0" max="100" step="1"/>
+                                                <input type="text" id="ATEMKey1DVEBorderBevelPositionText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="ATEMKey1DVEBorderBevelSoften" class="col-form-label">Bevel Soften:</label>
+                                                <input type="range" id="ATEMKey1DVEBorderBevelSoften" class="col-sm-8" min="0" max="100" step="1"/>
+                                                <input type="text" id="ATEMKey1DVEBorderBevelSoftenText" class="col-sm-3"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="optATEMKey1PageFly">
+                                        <hr />
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-8">
+                                                <label for="" class="col-form-label">Keyframe:</label>
+                                                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1SetKeyFrameA">Set A</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1SetKeyFrameB">Set B</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="ATEMKey1FlyRate" class="col-form-label">Rate:</label>
+                                                <input type="text" class="col-sm-12" name="form-control" id="ATEMKey1FlyRate" />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-12">
+                                                <label for="" class="col-form-label">Run To:</label>
+                                                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToKeyFrameA">A</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToKeyFrameB">B</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToKeyFrameFull">Full</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row ATEMKeyRunToInfiteRow" >
+                                            <div class="form-group col-sm-12">
+                                                <label for="" class="col-form-label">Run To Infinite:</label>
+                                                <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfTopLeft">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-up-left-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfTop">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-up-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfTopRight">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-up-right-solid"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfLeft">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-left-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfCenter">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#expand-arrows-alt-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfCenterKey">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#compress-arrows-alt-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfRight">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-right-solid"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfBottomLeft">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-down-left-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfBottom">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-down-solid"></use></svg>
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMKey1RunToInfBottomRight">
+                                                            <svg viewBox="0 0 16 16" ><use xlink:href="#arrow-down-right-solid"></use></svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        Key 2
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select name="" id="ATEMKey2Mode">
+                                            <option value="">Luma</option>
+                                            <option value="">Chroma</option>
+                                            <option value="">Pattern</option>
+                                            <option value="">DVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body overflow-auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        Key 3
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select name="" id="ATEMKey3Mode">
+                                            <option value="">Luma</option>
+                                            <option value="">Chroma</option>
+                                            <option value="">Pattern</option>
+                                            <option value="">DVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body overflow-auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        Key 4
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select name="" id="ATEMKey4Mode">
+                                            <option value="">Luma</option>
+                                            <option value="">Chroma</option>
+                                            <option value="">Pattern</option>
+                                            <option value="">DVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body overflow-auto"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="secPageATEMDSK">
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                DSK 1
+                            </div>
+                            <div class="card-body overflow-auto">
+                                <h5 class="card-title">Settings</h5>
+                                <form>
+                                    <div class="form-group row" >
+                                        <label for="ATEMDSK1Rate" class="col-sm-5 col-form-label">Rate</label>
+                                        <input type="text" class="col-sm-6" name="form-control" id="ATEMDSK1Rate" />
+                                    </div>
+                                    <div class="form-group row" i>
+                                        <label for="ATEMDSK1FillSource" class="col-sm-4 col-form-label">Fill</label>
+                                        <div class="col-sm-8">
+                                            <select id="ATEMDSK1FillSource"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" >
+                                        <label for="ATEMDSK1CutSource" class="col-sm-4 col-form-label">Key</label>
+                                        <div class="col-sm-8">
+                                            <select id="ATEMDSK1CutSource"></select>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ATEMDSK1MaskEnable" id="ATEMDSK1MaskEnable" value="" >
+                                            Mask
+                                        </label>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1MaskTop" class="col-form-label">Top:</label>
+                                            <input type="text" class="col-sm-12" name="form-control" id="ATEMDSK1MaskTop" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1MaskBottom" class="col-form-label">Bottom:</label>
+                                            <input type="text" class="col-sm-12" name="form-control" id="ATEMDSK1MaskBottom" />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1MaskLeft" class="col-form-label">Left:</label>
+                                            <input type="text" class="col-sm-12" name="form-control" id="ATEMDSK1MaskLeft" />
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1MaskRight" class="col-form-label">Right:</label>
+                                            <input type="text" class="col-sm-12" name="form-control" id="ATEMDSK1MaskRight" />
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="ATEMDSK1PMKEnable" id="ATEMDSK1PMKEnable" value="" >
+                                            Pre Multiplied Key
+                                        </label>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1PMKClip" >Clip:</label>
+                                            <input type="text" name="form-control" class="col-sm-12" id="ATEMDSK1PMKClip" value="10"/>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label for="ATEMDSK1PMKGain" >Gain:</label>
+                                            <input type="text" name="form-control" class="col-sm-12" id="ATEMDSK1PMKGain" value="10"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" name="ATEMDSK1PMKInvert" id="ATEMDSK1PMKInvert" value="" >
+                                            Invert Key
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                DSK 2
+                            </div>
+                            <div class="card-body overflow-auto"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card text-white bg-secondary">
+                            <div class="card-header">
+                                Transistion
+                            </div>
+                            <div class="card-body overflow-auto">
+                                Settings
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMKeyerPage('Key')" id="ATEMKeyerPageKey">Upstream Keyer</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMKeyerPage('DSK')" id="ATEMKeyerPageDSK">Downstream Keyer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="secATEMMacro">
+                <div class="row">
+                    <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton1">1</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton2">2</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton3">3</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton4">4</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton5">5</button>
+                        </div>
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton6">6</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton7">7</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton8">8</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton9">9</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton10">10</button>
+                        </div>
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton11">11</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton12">12</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton13">13</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton14">14</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton15">15</button>
+                        </div>
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton16">16</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton17">17</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton18">18</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton19">19</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMacroButton20">20</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMMacroPage('1')" id="ATEMMacroPage1">1 - 20</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMMacroPage('2')" id="ATEMMacroPage2">21 - 40</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMMacroPage('3')" id="ATEMMacroPage3">41 - 60</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMMacroPage('4')" id="ATEMMacroPage4">61 - 80</button>
+                            <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showATEMMacroPage('5')" id="ATEMMacroPage5">81 - 100</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div id="secATEMAux">
+                <div class="row" id="rowInputsATEM">
+                    <div class="col-lg-12">
+
+                    </div>
+                </div>
+                <div class="row" id="rowDestinationATEM">
+                    <div class="col-lg-6" id="ATEMAuxControl">
+
+                    </div>
+                    <div class="col-lg-6" id="ATEMMultiViewControl">
+                        <div class="row">
+                            <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
+                                <div class="btn-default col-md-4" style="padding-top:6px;padding-left:6px">
+                                    <h4>MultiView 1</h4>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMultiViewLayout1">
+                                    <svg viewbox="0 0 16 16"><use xlink:href="#atem-multi-layout-1"></use></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMultiViewLayout2">
+                                    <svg viewbox="0 0 16 16"><use xlink:href="#atem-multi-layout-2"></use></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMultiViewLayout3">
+                                    <svg viewbox="0 0 16 16"><use xlink:href="#atem-multi-layout-3"></use></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="" id="ATEMMultiViewLayout4">
+                                    <svg viewbox="0 0 16 16"><use xlink:href="#atem-multi-layout-4"></use></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        angular.module('AVControlWeb', []).controller('VCWSController', function ($scope, $http, $interval, $q) {
+                
+            $scope.Projector = function (device,command,options) {
+                if (options instanceof StatusObj) {
+                    options = options.Code;
+                }
+                $scope.VControlWS.scrRunCmd(device,command,"","",options,"","","");
+            };
+
+            $scope.videoRouting = function (Input,Output) {
+                if (Input instanceof StatusObj) {
+                    Input = Input.Code
+                }
+                
+                if (Output instanceof StatusObj) {
+                    Output = Output.Code
+                }
+
+                $scope.VControlWS.scrRunCmd($scope.devices.BackMagic,"Route","","",Input,Output,"","");
+            };
+
+            $scope.powerSequencer = function (Command, Bank, Outlet) {
+                $scope.VControlWS.scrRunCmd($scope.devices.FURMAN_SEQ,Command,"","",Bank,Outlet,"","")
+            };
+
+            $scope.powerIOT = function (Command, DeviceID, Value) {
+                $scope.VControlWS.scrRunCmd($scope.devices.HoobsControl,Command,"","",DeviceID,Value,"","")
+            }
+
+            $scope.ScreenControl = function (ScreenType,Direction) {
+                if (ScreenType instanceof StatusObj) {
+                    ScreenType = ScreenType.Code
+                }
+                
+                if (Direction instanceof StatusObj) {
+                    Direction = Direction.Code
+                }
+
+                $scope.VControlWS.scrRunCmd($scope.devices.ScreenControl,Direction,"","",ScreenType,"","","")
+            }
+
+            $scope.SancLightControl = function (LightCmd) {
+                if (LightCmd instanceof StatusObj) {
+                    LightCmd = LightCmd.Code
+                }
+
+                $scope.VControlWS.scrRunCmd($scope.devices.ScreenControl,"SwitchON","","",LightCmd,"","","")
+            }
+
+            $scope.BankInfoDisplay = function (objBtn) {
+                
+                objBtn = $("#"+objBtn.id);
+
+                if (objBtn.hasClass("btn-primary")) {
+                    //show Bank Status
+                    objBtn.parent().parent().offsetParent().find(".SeqBankName").hide();
+                    objBtn.parent().parent().offsetParent().find(".SeqBankStatus").show();
+                    objBtn.removeClass("btn-primary");
+                    objBtn.addClass("btn-outline-primary");
+                } else {
+                    //show Bank Name
+                    objBtn.parent().parent().offsetParent().find(".SeqBankName").show();
+                    objBtn.parent().parent().offsetParent().find(".SeqBankStatus").hide();
+                    objBtn.removeClass("btn-outline-primary");
+                    objBtn.addClass("btn-primary");
+                }
+            }
+
+            $scope.ShowAllBankInfoDisplay = function() {
+
+                if ($("#btnSeqAllInfo").hasClass("btn-primary")) {
+                    if ($("#btnSeq0Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq0Info")[0]);
+                    } 
+                    if ($("#btnSeq1Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq1Info")[0]);
+                    }
+                    if ($("#btnSeq2Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq2Info")[0]);
+                    }
+                    if ($("#btnSeq3Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq3Info")[0]);
+                    }
+                    if ($("#btnSeq4Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq4Info")[0]);
+                    }
+                    if ($("#btnSeq5Info").hasClass("btn-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq5Info")[0]);
+                    }
+                    $("#btnSeqAllInfo").removeClass("btn-primary");
+                    $("#btnSeqAllInfo").addClass("btn-outline-primary");
+                } else {
+                    if ($("#btnSeq0Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq0Info")[0]);
+                    } 
+                    if ($("#btnSeq1Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq1Info")[0]);
+                    }
+                    if ($("#btnSeq2Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq2Info")[0]);
+                    }
+                    if ($("#btnSeq3Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq3Info")[0]);
+                    }
+                    if ($("#btnSeq4Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq4Info")[0]);
+                    }
+                    if ($("#btnSeq5Info").hasClass("btn-outline-primary")) {
+                        $scope.BankInfoDisplay($("#btnSeq5Info")[0]);
+                    }
+                    $("#btnSeqAllInfo").removeClass("btn-outline-primary");
+                    $("#btnSeqAllInfo").addClass("btn-primary");
+                }
+            }
+
+            angular.extend($scope,{
+                menudisplay: {
+                    //Menu display Pager
+                    showPanel: function (pageSelected) {
+                        //show hide pannel
+                        $("div[id*='page']").hide();
+                        $("#page" + pageSelected).show();
+
+                        //toggle button
+                        $("button[id*='btnMenu']").removeClass("btn-primary").addClass("btn-secondary");
+                        $("#btnMenu" + pageSelected).removeClass("btn-secondary").addClass("btn-primary");
+                        if (pageSelected == "VideoRouting") {
+                            $scope.menudisplay.showVideoOuputPanel("Favorites");
+                        }
+
+                        if (pageSelected == "Display") {
+                            $scope.menudisplay.showDisplayOutputPanel("Projectors");
+                        }
+
+                        if (pageSelected == "ATEM") {
+                            $scope.menudisplay.showATEMPanel("Main");
+                        }
+
+                        if (pageSelected == "Power") {
+                            $scope.menudisplay.showPowerPanel("Furman");
+                        }
+                                                    
+                        //Cancel existing background task
+                        if ($scope.CurrentBGTask!=null) {
+                            $interval.cancel($scope.CurrentBGTask);
+
+                            //run unload page function
+                            if ($scope.UnloadBgTask.hasOwnProperty(pageSelected)) {
+                                $scope.UnloadBgTask[pageSelected]();
+                            }
+                        }
+
+                        //start background task
+                        if ($scope.BgTasks.hasOwnProperty(pageSelected)) {
+                            $scope.CurrentBGTask = $scope.BgTasks[pageSelected]();
+                        }
+                    },
+                    showVideoOuputPanel: function(pageSelected) {
+                        //show hide pannel
+                        $("div[id*='secPageVideo']").hide();
+                        $("#secPageVideo" + pageSelected).show();
+
+                        //toggle button
+                        $("button[id*='VRmenu']").removeClass("btn-info").addClass("btn-secondary");
+                        $("#VRmenu" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+                    },
+                    showDisplayOutputPanel: function(pageSelected) {
+                        //show hide pannel
+                        $("div[id*='DisplayPage']").hide();
+                        $("#DisplayPage" + pageSelected).show();
+
+                        //toggle button
+                        $("button[id*='DisplayButton']").removeClass("btn-info").addClass("btn-secondary");
+                        $("#DisplayButton" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+                    },
+                    showPowerPanel: function(pageSelected){
+                        //show hide panel
+                        $("div[id*='secPower']").hide();
+                        $("#secPower" + pageSelected).show();
+
+                        //toggle button
+                        $("button[id*='PowerMenu']").removeClass("btn-info").addClass("btn-secondary");
+                        $("#PowerMenu" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+                    },
+                    showATEMPanel: function(pageSelected) {
+                    
+                        var currentpageSelected = "secATEM"+pageSelected;
+                        
+                        //if button pressed is the same page, then go back to main menu
+                        if (currentpageSelected != $("div[id*='secATEM']:visible")[0].id) {
+                            //show hide pannel
+                            $("div[id*='secATEM']").hide();
+                            $("#secATEM" + pageSelected).show();
+
+                            //toggle button
+                            $("button[id*='ATEMMainMenu']").removeClass("btn-info").addClass("btn-secondary");
+                            $("#ATEMMainMenu" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+
+                            //set default page for Keyer
+                            if (pageSelected=="Keyer" && $("button[id*='ATEMKeyerPage'].btn-secondary").length==2) {
+                                $scope.menudisplay.showATEMKeyerPage('Key');
+                            } 
+
+                            //set default page for Macro
+                            if (pageSelected=="Macro" && $("button[id*='ATEMMacroPage'].btn-secondary").length==5) {
+                                $scope.menudisplay.showATEMMacroPage('1');
+                            }
+
+                        } else {
+                            
+                            //show hide pannel
+                            $("div[id*='secATEM']").hide();
+                            $("#secATEMMain").show();
+
+                            //clear toggle on all buttons
+                            $("button[id*='ATEMMainMenu']").removeClass("btn-info").addClass("btn-secondary");
+                        }
+                    },
+                    showATEMKeyerPage: function(pageSelected) {
+                        //show hide pannel
+                        $("div[id*='secPageATEM']").hide();
+                        $("#secPageATEM" + pageSelected).show();
+
+                        //toggle button
+                        $("button[id*='ATEMKeyerPage']").removeClass("btn-info").addClass("btn-secondary");
+                        $("#ATEMKeyerPage" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+                    },
+                    showATEMMacroPage: function(pageSelected) {
+
+                        //set labels
+                        $("#secATEMMacro .row:first-child button").each(function(){
+                            var buttonNum = Number.parseInt(this.id.replace("ATEMMacroButton",""));
+                            $(this).html((Number.parseInt(pageSelected)-1)*20+buttonNum);
+                        });
+
+                        //toggle button
+                        $("button[id*='ATEMMacroPage']").removeClass("btn-info").addClass("btn-secondary");
+                        $("#ATEMMacroPage" + pageSelected).removeClass("btn-secondary").addClass("btn-info");
+                    }
+                }
+            });
+            
+            //unload task
+            angular.extend($scope,{
+                UnloadBgTask:{
+                    ATEM: function() {
+                        $scope.ATEMControlWebSock.close();
+                        $scope.ATEMControlWebSock.ATEM_Status=null;
+                        $("#DisplayATEMControlPanel").hide();
+                        $("#DisplayATEMNotAvailable").show();
+                    }
+                }
+            });
+                                    
+            //background task
+            angular.extend($scope,{
+                BgTasks:{
+                    Main: function(){
+                        return $interval(function() {
+                            $scope.VControlWS.scrGetGlobalVar("STATUS_SYSTEMPWR").then(function(response){
+                                if($scope.Furman_Power_Status.getDescriptionbyCode(response.data)!=null){
+                                    switch (response.data) {
+                                        case "OK":
+                                            $("#txtSystemStatus").removeClass("badge-danger badge-warning badge-success").addClass("badge-danger");
+                                            break;
+                                        case "2":
+                                            $("#txtSystemStatus").removeClass("badge-danger badge-warning badge-success").addClass("badge-success");
+                                            break;
+                                        case "1":
+                                        case "3":
+                                            $("#txtSystemStatus").removeClass("badge-danger badge-warning badge-success").addClass("badge-warning");
+                                            break;
+                                    }
+                                    $("#txtSystemStatus").text($scope.Furman_Power_Status.getDescriptionbyCode(response.data));
+                                }
+                            });
+                            
+                        },1000);
+                    },
+                    Display: function() {
+                        return $interval(function(){
+
+                            if ($("#DisplayButtonProjectors").hasClass("btn-info")) {
+                                //check for left Projector
+                                $scope.VControlWS.scrGetGlobalVar("STATUS_PROJ_LEFT").then(function(response){
+
+                                    $scope.BgTasks.DisplayProcessProjector("#txtProjL",response.data);
+
+                                    //check for right projector
+                                    $scope.VControlWS.scrGetGlobalVar("STATUS_PROJ_RIGHT").then(function(response){
+                                        
+                                        $scope.BgTasks.DisplayProcessProjector("#txtProjR",response.data);
+
+                                    });
+                                });
+                            } else if ($("#DisplayButtonScreen").hasClass("btn-info")) {
+                                //check for screen status
+                                $scope.VControlWS.scrGetGlobalVar("STATUS_SCREEN").then(function(response){
+                                    var screendata=response.data.split("|");
+                                    if (screendata.length==4) {
+                                        for (var i=0; i<screendata.length;i++) {
+                                            if (screendata[i]=="UP"||screendata[i]=="DOWN"||screendata[i]=="STOP"||screendata[i]=="OFF"){
+                                                switch (screendata[i]){
+                                                    case "UP":
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"UP").addClass("btn-warning");
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"DOWN").removeClass("btn-warning");
+                                                        break;
+                                                    case "DOWN":
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"UP").removeClass("btn-warning");
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"DOWN").addClass("btn-warning");
+                                                        break;
+                                                    case "OFF":
+                                                    case "STOP":
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"UP").removeClass("btn-warning");
+                                                        $("#disp"+$scope.Screen_Type.getNamebyCode(i+1)+"DOWN").removeClass("btn-warning");
+                                                        break;
+                                                } 
+                                                
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        },1000);
+                    },
+                    DisplayProcessProjector: function(projectorId,projectorData) {
+                        var projdata = projectorData.split("|");
+                        if (projdata.length==3){
+
+                            //update power
+                            if($scope.Projector_Power.getDescriptionbyCode(projdata[0])!=null){
+                                
+                                //update power status
+                                switch (projdata[0]) {
+                                    case "05":
+                                    case "09":
+                                    case "00":
+                                        $(projectorId+"PWR").removeClass("badge-danger badge-warning badge-success").addClass("badge-danger");
+                                        break;
+                                    case "02":
+                                    case "03":
+                                    case "04":
+                                        $(projectorId+"PWR").removeClass("badge-danger badge-warning badge-success").addClass("badge-warning");
+                                        break;
+                                    case "01":
+                                        $(projectorId+"PWR").removeClass("badge-danger badge-warning badge-success").addClass("badge-success");
+                                        break;
+                                }
+                                $(projectorId+"PWR").text($scope.Projector_Power.getDescriptionbyCode(projdata[0]));
+                            } 
+                            
+                            //update source
+                            if ($scope.Projector_Source.getDescriptionbyCode(projdata[1])!=null) {
+                                $(projectorId+"Source").text($scope.Projector_Source.getDescriptionbyCode(projdata[1]));
+                            }
+
+                            //update Lamp Hrs
+                            if (projdata[2]!="" && Number.isNaN(Number.parseInt(projdata[2].trim()))==false) {
+                                $(projectorId+"LampHrs").text(projdata[2].trim()+" Hrs");
+                            }
+                        }
+                    },
+                    VideoRouting: function() {
+                        return $interval(function(){
+                            $scope.VControlWS.scrGetGlobalVar("STATUS_VIDEOHUB").then(function(response){
+                                var routingdata = response.data.split(",");
+                                if ((routingdata.length-1)==12) {
+                                    //reset buttons
+                                    $("button[id*='route']").removeClass("btn-warning");
+                                    for (var i=0; i<(routingdata.length-1);i++) {
+                                        var route = routingdata[i].split(" ");
+                                        if (route.length==2) {
+                                            $("#route"+$scope.Video_Input.getNamebyCode(route[1])+$scope.Video_Output.getNamebyCode(route[0]))
+                                            .addClass("btn-warning");
+                                        }
+                                    }    
+                                } 
+                            });
+                        },300);
+                    },
+                    Power: function() {
+                        return $interval(function(){
+                            $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_0").then(function(response){
+                                
+                                $scope.BgTasks.PowerSEQProcess("#txtSeq0",response.data);
+                                
+                                $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_1").then(function(response){
+
+                                    $scope.BgTasks.PowerSEQProcess("#txtSeq1",response.data);
+
+                                    $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_2").then(function(response){
+
+                                        $scope.BgTasks.PowerSEQProcess("#txtSeq2",response.data);
+
+                                        $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_3").then(function(response){
+
+                                            $scope.BgTasks.PowerSEQProcess("#txtSeq3",response.data);
+
+                                            $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_4").then(function(response){
+
+                                                $scope.BgTasks.PowerSEQProcess("#txtSeq4",response.data);
+
+                                                $scope.VControlWS.scrGetGlobalVar("STATUS_SEQ_5").then(function(response){
+
+                                                    $scope.BgTasks.PowerSEQProcess("#txtSeq5",response.data);
+
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });    
+                        },1000);
+                    },
+                    PowerSEQProcess: function(SeqId,SeqData) {
+                        var SeqArray = SeqData.split("|");
+                        if (SeqArray.length==3){
+                            //bank status 
+                            var BankArray = SeqArray[0].split(",");
+                            if (BankArray.length==3){
+                                for (var i=0; i<BankArray.length; i++) {
+                                    var BankStatus = BankArray[i].split("=")[1];
+                                    if (BankStatus=="ON" || BankStatus=="OFF") {
+                                        $(SeqId+"Bank"+(i+1)).text(BankStatus);  
+                                        if (BankStatus=="ON") {
+                                            if ($(SeqId+"Bank"+(i+1)).hasClass("badge-success")==false) {
+                                                $(SeqId+"Bank"+(i+1)).removeClass("badge-danger");
+                                                $(SeqId+"Bank"+(i+1)).addClass("badge-success");
+                                            }
+                                        }  else if (BankStatus=="OFF") {
+                                            $(SeqId+"Bank"+(i+1)).removeClass("badge-success");
+                                            $(SeqId+"Bank"+(i+1)).addClass("badge-danger");
+                                        }
+                                    }
+                                }
+                            }
+
+                            //Current Status
+                            if (SeqArray[1]!="") {
+                                $(SeqId+"AMP").text(SeqArray[1]+"A");
+                            }
+                            
+                            //Watts Status
+                            if (SeqArray[2]!="") {
+                                $(SeqId+"WATT").text(SeqArray[2]+"W");
+                            }
+                        }
+                    },
+                    Lights: function() {
+
+                    },
+                    ATEM: function() {
+                        //start ATEMWebsocket
+                        $scope.ATEMControlWebSock.connect($scope.BgTasks.ATEMStatusCallback);
+
+                        //for debug: to show panel
+                        $("#DisplayATEMControlPanel").show();
+                        $("#DisplayATEMNotAvailable").hide();
+
+                    },
+                    ATEMStatusCallback: function(recvMessage,ws) {
+                        
+                        var jsonobj = JSON.parse(recvMessage);
+
+                        if (jsonobj!=undefined) {
+                            
+                            //check for valid packet
+                            if (jsonobj.packet=="Status" && jsonobj.data!=null) {
+                                
+                                //set atem status variable
+                                $scope.ATEMControlWebSock.ATEM_Status = jsonobj.data;    
+
+                                //show control interface is shown
+                                if ($("#DisplayATEMNotAvailable").is(":visible")) {
+                                    $("#DisplayATEMControlPanel").show();
+                                    $("#DisplayATEMNotAvailable").hide();
+                                }
+
+                                //update atem control status
+
+                                return;
+                            }
+
+                        } 
+
+                        //hide ATEM Control interface
+                        $("#DisplayATEMControlPanel").hide();
+                        $("#DisplayATEMNotAvailable").show();
+                        $scope.ATEMControlWebSock.ATEM_Status = null;
+                    }
+                }
+            });
+
+            //global objects
+            function initData() {
+                
+                $scope.devices = {
+                    BlackMagic:{deviceName:"videohub"},
+                    ProjLEFT:{deviceName:"epson",channelName:"1"},
+                    ProjRIGHT:{deviceName:"epson",channelName:"2"},
+                    FURMAN_SEQ:{deviceName:"furman"},
+                    ScreenControl:{deviceName:"relay"},
+                    HoobsControl:{deviceName:"hoobs"}
+                };
+                
+                var Furman_Power_Status = new DeviceStatusObj(); 
+                Furman_Power_Status.POWER_OFF = new StatusObj("POWER_OFF","OK","Power Off");
+                Furman_Power_Status.POWER_UPSEQ = new StatusObj("POWER_UPSEQ","1","Power Up Sequence");
+                Furman_Power_Status.POWER_ON = new StatusObj("POWER_ON","2","Power On");
+                Furman_Power_Status.POWER_DOWNSEQ = new StatusObj("POWER_DOWNSEQ","3","Power Down Sequence");
+                angular.extend($scope,{Furman_Power_Status:Furman_Power_Status});
+
+                var Projector_Power = new DeviceStatusObj();
+                Projector_Power.STANDBY = new StatusObj("STANDBY","00","Standby");
+                Projector_Power.PROJECTING = new StatusObj("PROJECTING","01","Projecting");
+                Projector_Power.WARMUP = new StatusObj("WARMUP","02","Warm-up");
+                Projector_Power.COOLING = new StatusObj("COOLING","03","Cooling");
+                Projector_Power.NETWORK = new StatusObj("NETWORK","04","Monitoring");
+                Projector_Power.STANDBYERROR = new StatusObj("STANDBYERROR","05","Error");
+                Projector_Power.STANDBY2 = new StatusObj("STANDBY2","09","Standby status");
+                angular.extend($scope,{Projector_Power:Projector_Power});
+
+                var Projector_Source = new DeviceStatusObj();
+                Projector_Source.COMPUTER = new StatusObj("COMPUTER","10","Computer");
+                Projector_Source.COMPUTER_RGB = new StatusObj("COMPUTER_RGB","10","Computer(RGB)");
+                Projector_Source.COMPUTER_COMP = new StatusObj("COMPUTER_COMP","14","Computer(Component)");
+                Projector_Source.COMPUTER_AUTO = new StatusObj("COMPUTER_AUTO","1F","Computer(Auto)");
+                Projector_Source.HDMI = new StatusObj("COMPUTER_AUTO","30","HDMI");
+                Projector_Source.SWITCH_Video_SVIDEO = new StatusObj("SWITCH_Video_SVIDEO","40","Switch Video and S-Video");
+                Projector_Source.VIDEO = new StatusObj("VIDEO","41","Video");
+                Projector_Source.SVIDEO = new StatusObj("SVIDEO","42","S-Video");
+                Projector_Source.SDI = new StatusObj("SDI","60","SDI");
+                Projector_Source.DISPLAYPORT = new StatusObj("DISPLAYPORT","70","DisplayPort");
+                Projector_Source.HDBASET = new StatusObj("HDBASET","80","HDBaseT");
+                Projector_Source.BNC_5BNC = new StatusObj("BNC_5BNC","BO","BNC(5BNC)");
+                Projector_Source.BNC_RGB = new StatusObj("BNC_RGB","B1","BNC(RGB)");
+                Projector_Source.BNC_COMP = new StatusObj("BNC_COMP","B4","BNC(Component)");
+                Projector_Source.SWITCH_ALL = new StatusObj("SWITCH_ALL","F0","Switch to all input sources in order");
+                Projector_Source.SWITCH_COMPBNCDP = new StatusObj("SWITCH_COMPBNCDP","F1","Switch to Computer, BNC, and DisplayPort in order");
+                Projector_Source.SWITCH_SVVHDMIHDBSDI = new StatusObj("SWITCH_SVVHDMIHDBSDI","F2","Switch to S-Video, Video, HDMI, HDBaseT, and SDI* in order");
+                angular.extend($scope,{Projector_Source:Projector_Source});
+
+                var Video_Input = new DeviceStatusObj();
+                Video_Input.PC1 = new StatusObj("PC1","0","PC1");
+                Video_Input.PC2 = new StatusObj("PC2","1","PC2");
+                Video_Input.CAM = new StatusObj("CAM","2","Camera");
+                Video_Input.DVD = new StatusObj("DVD","3","DVD");
+                angular.extend($scope,{Video_Input:Video_Input});
+
+                var Video_Output = new DeviceStatusObj();
+                Video_Output.PROJLEFT = new StatusObj("PROJLEFT","0","Projector Left");
+                Video_Output.PROJRIGHT = new StatusObj("PROJRIGHT","1","Projector Right");
+                Video_Output.STAGECENTER = new StatusObj("STAGECENTER","2","Stage Center");
+                Video_Output.STAGESIDE = new StatusObj("STAGESIDE","3","Stage Side");
+                Video_Output.UMEZZLEFT = new StatusObj("UMEZZLEFT","4","U.Mezz Left");
+                Video_Output.UMEZZRIGHT = new StatusObj("UMEZZRIGHT","5","U.Mezz Right");
+                Video_Output.WELCENTER = new StatusObj("WELCENTER","6","Welcome Center");
+                Video_Output.RECOUT = new StatusObj("RECOUT","7","Rec. Out");
+                angular.extend($scope,{Video_Output:Video_Output});
+
+                var Screen_Type = new DeviceStatusObj();
+                Screen_Type.LPROJSCR = new StatusObj("LPROJSCR","1","Left Projector Screen");
+                Screen_Type.RPROJSCR = new StatusObj("RPROJSCR","2","Right Projector Screen");
+                Screen_Type.LWINSCR = new StatusObj("LWINSCR","1","Left Window Roller Blind");
+                Screen_Type.RWINSCR = new StatusObj("RWINSCR","2","Right Window Roller Blind");
+                angular.extend($scope,{Screen_Type:Screen_Type});
+
+                var Screen_Cmd = new DeviceStatusObj();
+                Screen_Cmd.UP = new StatusObj("UP","screen/up","Screen Up");
+                Screen_Cmd.DOWN = new StatusObj("DOWN","screen/down","Screen Down");
+                Screen_Cmd.STOP = new StatusObj("STOP","screen/top","Screen Stop");
+                angular.extend($scope,{Screen_Cmd:Screen_Cmd});
+
+                var Screen_Cmd = new DeviceStatusObj();
+                Screen_Cmd.UP = new StatusObj("UP","blind/up","Screen Up");
+                Screen_Cmd.DOWN = new StatusObj("DOWN","blind/down","Screen Down");
+                Screen_Cmd.STOP = new StatusObj("STOP","blind/stop","Screen Stop");
+                angular.extend($scope,{Screen_Cmd:Screen_Cmd});
+
+                var Lights_Cmd = new DeviceStatusObj();
+                Lights_Cmd.MEZZANINE = new StatusObj("MEZZANINE","button/5","Mezzanine");
+                Lights_Cmd.ALLOFF = new StatusObj("ALLOFF","button/4","All Lights Off");
+                Lights_Cmd.ALLON = new StatusObj("ALLON","button/3","All Lights On");
+                Lights_Cmd.FRONTDIM = new StatusObj("FRONTDIM","button/2","Front House Dim");
+                Lights_Cmd.BACKDIM = new StatusObj("BACKDIM","button/1","Front House Dim");
+                angular.extend($scope,{Lights_Cmd:Lights_Cmd});
+
+                var Furman_Cmd = new DeviceStatusObj();
+                Furman_Cmd.POWERON = new StatusObj("POWERON","poweron","Power On");
+                Furman_Cmd.POWEROFF = new StatusObj("POWEROFF","poweroff","Power Off");
+                Furman_Cmd.BANKON = new StatusObj("BANKON","bankon","Bank On");
+                Furman_Cmd.BANKOFF = new StatusObj("BANKOFF","bankoff","Bank Off");
+                
+                angular.extend($scope,{Furman_Cmd:Furman_Cmd});
+
+            }
+                            
+            initData();
+
+            //V-Control Web Service Objects
+            angular.extend($scope,{
+                NodeRedAPI: {
+                    callAPI: function(method,URL,message) {
+                        $http({
+                            "method":method,
+                            "url":URL,
+                            "data":message
+                        })
+                        .then(function(response){
+                            return response;
+                        })
+                    }
+                },
+                VControlWS: {
+                    scrRunTask: function (funcTask) {
+                        $http.get('/cgi-bin/scrRunTask%05' + funcTask)
+                            .then(function (response) {
+                            });
+                    },
+                    scrRunCmd: function (device,command,dp1,dp2,p1,p2,p3,p4) {
+                    
+                        if (dp1 instanceof StatusObj) {
+                            dp1 = dp1.Code
+                        }
+
+                        if (dp2 instanceof StatusObj) {
+                            dp2 = dp2.Code
+                        }
+
+                        if (p1 instanceof StatusObj) {
+                            p1 = p1.Code
+                        }
+
+                        if (p2 instanceof StatusObj) {
+                            p1 = p2.Code
+                        }
+
+                        if (p3 instanceof StatusObj) {
+                            p3 = p3.Code
+                        }
+
+                        if (p4 instanceof StatusObj) {
+                            p4 = p4.Code
+                        }
+
+                        $http.get('/cgi-bin/devRunCommand%05' + device.deviceName + "%02" + device.channelName + "%02" + command + "%02" + dp1 + "%02" + dp2 +  
+                        "%02"+ p1 + "%02" + p2 + "%02" + p3 + "%02" + p4)
+                            .then(function (response) {
+                            });
+                    },
+                    scrGetGlobalVar: function(varname) {
+                        return $http.get('/cgi-bin/scrGetGlobalVar%05' + varname).then(function(response){
+                            response.data = response.data.replace("scrGetGlobalVar%05","");
+                            return response;
+                        });
+                    }
+                },
+
+                ATEMControlWebSock: {
+                    websocket:null,
+                    ATEM_Status:null,
+                    connect: function(recvCallback) {
+                        if ("WebSocket" in window) {
+                            
+                            // Let us open a web socket
+                            var wsaddr = "ws://"+window.location.hostname+"/atemcontrol";
+                            //alert("ATEMControl location: "+wsaddr);
+                            var ws = new WebSocket(wsaddr);
+                                
+                            ws.onopen = function()
+                            {
+                                // Web Socket is connected, send data using send()
+                                //alert("Message is sent...");
+                                ws.send(JSON.stringify({
+                                    packet:"Status"
+                                }));
+                                
+                                //set websocket object
+                                $scope.ATEMControlWebSock.websocket = ws;
+                            };
+                                
+                            ws.onmessage = function (evt) 
+                            { 
+                                var received_msg = evt.data;
+                                console.log(received_msg);
+                                recvCallback(received_msg,$scope.ATEMControlWebSock.websocket);
+                            };
+                                                            
+                            ws.onclose = function()
+                            { 
+                                // websocket is closed.
+                                //alert("Connection is closed..."); 
+                                $scope.ATEMControlWebSock.websocket=null;
+                            };
+                            
+                        }
+                        else
+                        {
+                            // The browser doesn't support WebSocket
+                            alert("WebSocket NOT supported by your Browser!");
+                        }
+                    },
+                    sendmsg: function(jsonobj) {
+                        ws = $scope.ATEMControlWebSock.websocket 
+                        if (ws!=null) {
+                            ws.send(JSON.stringify({
+                                packet:"Command",
+                                data:jsonobj
+                            }));
+                        }
+                    },
+                    close: function() {
+                        ws = $scope.ATEMControlWebSock.websocket 
+                        if (ws!=null) {
+                            ws.close();
+                        }
+                    }
+                }
+            });
+
+            //document onload
+            angular.element(document).ready(
+                function () {
+                
+                    $scope.menudisplay.showPanel("Main");
+
+                    //Duplicate Keyer controls
+                    $("#secPageATEMKey .card-body").each(function(index){
+                        if ($(this).html()=="") {
+                            index++;
+                            $(this).html(
+                                $($("#secPageATEMKey .card-body")[0]).html()
+                                    .replace(/ATEMKey1/g,"ATEMKey"+index)
+                            );
+                        }
+                    });
+
+                    $("#secPageATEMDSK .card-body").each(function(index){
+                        if ($(this).html()=="") {
+                            index++;
+                            $(this).html(
+                                $($("#secPageATEMDSK .card-body")[0]).html()
+                                    .replace(/ATEMDSK1/g,"ATEMDSK"+index)
+                            );
+                        }
+                    });
+
+                    //Init Color Picker
+                    $("input[id$='BorderColor']").spectrum({
+                        type: "color",
+                        hideAfterPaletteSelect: "true",
+                        showInput: "true",
+                        showInitial: "true",
+                        showAlpha: "false",
+                        preferredFormat: "hsl",
+                        hide: function (color) {
+                            var arrHSL = color.toHsl();
+                            $('#'+this.id+'Hue').val(Math.round(arrHSL.h));
+                            $('#'+this.id+'Sat').val(Math.round(arrHSL.s*100));
+                            $('#'+this.id+'Lum').val(Math.round(arrHSL.l*100));
+                        }
+                    });
+
+                    //Init Input Range with Textbox
+                    $("input[type='range']").each(function(item){
+                        
+                        //change on slider
+                        $(this).change(function(){
+                            var textbox = $("#"+this.id+"Text");
+                            if (textbox.length>0) {
+                                textbox.val(this.value);
+                            }
+                            if (this.id.indexOf("ChromaHue")>-1) {
+                                textbox.css({"background-color": "hsl("+this.value+",100%,50%"});
+                                var colorvalue = Number.parseFloat(this.value);
+                                if (colorvalue>30 && colorvalue<204) {
+                                    textbox.css({"color": "#000000"});
+                                } else {
+                                    textbox.css({"color": "#ffffff"});
+                                }
+                            }
+                        });
+
+                        //change on textbox
+                        var textbox = $("#"+this.id+"Text");
+                        if (textbox.length>0) {
+                            textbox.change(function(){
+                                var inpRange = $("#"+this.id.replace("Text",''));
+                                if (inpRange.length>0) {
+                                    //check value
+                                    if (!isNaN(Number.parseFloat(this.value))) {
+                                        var numvalue = Number.parseFloat(this.value);
+                                        if (inpRange[0].min<=numvalue && inpRange[0].max>=numvalue) {
+                                            inpRange.val(numvalue);
+
+                                            if (inpRange[0].id.indexOf("ChromaHue")>-1) {
+                                                $(this).css({"background-color": "hsl("+this.value+",100%,50%"});
+                                                var colorvalue = Number.parseFloat(this.value);
+                                                if (colorvalue>30 && colorvalue<204) {
+                                                    $(this).css({"color": "#000000"});
+                                                } else {
+                                                    $(this).css({"color": "#ffffff"});
+                                                }
+                                            }
+                                            return;
+                                        }
+                                    }
+                                    this.value = inpRange.val();
+                                }
+                            });
+                        }
+                        
+                    });
+
+                    //set ATEM Events to angular controller
+                }
+            ); 
+        });
+
+        //class declaration
+        class DeviceStatusObj {
+            getDescriptionbyCode(Code){
+                for (var item in this) {
+                    if (this[item].Code==Code){
+                        return this[item].Description;
+                    }
+                }
+                return null;
+            }
+            getNamebyCode(Code){
+                for (var item in this) {
+                    if (this[item].Code==Code){
+                        return this[item].Name;
+                    }
+                }
+                return null;
+            }
+        }
+
+        function StatusObj(Name,Code,Description) {
+            this.Name = Name;
+            this.Code = Code;
+            this.Description = Description; 
+        }
+
+    </script>
+
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: none;" fill="currentColor">
+        <defs>
+            <g id="arrow-down-left-solid"><path fill="currentColor" d="M 18.319 2.504 L 19.335 3.495 C 19.766 3.915 19.766 4.592 19.335 5.008 L 10.436 13.686 C 10.007 14.105 9.311 14.105 8.886 13.686 L -0.021 5.008 C -0.449 4.589 -0.449 3.91 -0.021 3.495 L 0.996 2.504 C 1.432 2.08 2.144 2.089 2.57 2.522 L 7.827 7.901 L 7.827 -4.929 C 7.827 -5.523 8.315 -6 8.927 -6 L 10.391 -6 C 11 -6 11.491 -5.523 11.491 -4.929 L 11.491 7.901 L 16.748 2.522 C 17.174 2.084 17.885 2.075 18.319 2.504 Z" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 3.941588, -1.515705)" bx:origin="0.207118 0.499997"></path></g>
+            <g id="arrow-down-solid"><path fill="currentColor" d="M 14.55 6.803 L 15.343 7.596 C 15.678 7.931 15.678 8.474 15.343 8.806 L 8.404 15.748 C 8.068 16.084 7.526 16.084 7.194 15.748 L 0.252 8.806 C -0.084 8.47 -0.084 7.928 0.252 7.596 L 1.044 6.803 C 1.384 6.464 1.937 6.471 2.269 6.817 L 6.369 11.12 L 6.369 0.857 C 6.369 0.382 6.751 0 7.226 0 L 8.369 0 C 8.843 0 9.226 0.382 9.226 0.857 L 9.226 11.12 L 13.325 6.817 C 13.657 6.467 14.211 6.46 14.55 6.803 Z"></path></g>
+            <g id="arrow-down-right-solid"><path fill="currentColor" d="M 16.802 6.645 L 17.819 7.636 C 18.25 8.057 18.25 8.735 17.819 9.15 L 8.92 17.828 C 8.49 18.247 7.793 18.247 7.368 17.828 L -1.535 9.15 C -1.965 8.73 -1.965 8.052 -1.535 7.636 L -0.518 6.645 C -0.083 6.221 0.626 6.231 1.052 6.664 L 6.31 12.043 L 6.31 -0.786 C 6.31 -1.38 6.8 -1.858 7.409 -1.858 L 8.875 -1.858 C 9.484 -1.858 9.973 -1.38 9.973 -0.786 L 9.973 12.043 L 15.231 6.664 C 15.657 6.226 16.367 6.217 16.802 6.645 Z" transform="matrix(0.707107, -0.707107, 0.707107, 0.707107, -3.372505, 8.142302)"></path></g>
+            <g id="arrow-left-solid"><path fill="currentColor" d="M 9.197 14.753 L 8.404 15.546 C 8.069 15.881 7.526 15.881 7.194 15.546 L 0.252 8.607 C -0.084 8.271 -0.084 7.728 0.252 7.396 L 7.194 0.454 C 7.529 0.119 8.072 0.119 8.404 0.454 L 9.197 1.247 C 9.536 1.586 9.529 2.14 9.183 2.472 L 4.88 6.571 L 15.143 6.571 C 15.618 6.571 16 6.954 16 7.429 L 16 8.571 C 16 9.046 15.618 9.428 15.143 9.428 L 4.88 9.428 L 9.183 13.528 C 9.533 13.86 9.54 14.414 9.197 14.753 Z" ></path></g>
+            <g id="expand-arrows-alt-solid"><path fill="currentColor" d="M 16 11.143 L 16 15.143 C 16.001 15.617 15.617 16.001 15.143 16 L 11.143 16 C 10.379 16 9.997 15.075 10.536 14.536 L 11.829 13.243 L 8 9.414 L 4.17 13.246 L 5.464 14.536 C 6.003 15.075 5.621 16 4.857 16 L 0.857 16 C 0.383 16.001 -0.001 15.617 0 15.143 L 0 11.143 C 0 10.379 0.925 9.996 1.464 10.536 L 2.757 11.829 L 6.588 8 L 2.756 4.168 L 1.464 5.464 C 0.925 6.004 0 5.621 0 4.857 L 0 0.857 C -0.001 0.383 0.383 -0.001 0.857 0 L 4.857 0 C 5.621 0 6.003 0.925 5.464 1.464 L 4.171 2.757 L 8 6.586 L 11.83 2.753 L 10.536 1.464 C 9.997 0.925 10.379 0 11.143 0 L 15.143 0 C 15.617 -0.001 16.001 0.383 16 0.857 L 16 4.857 C 16 5.621 15.075 6.004 14.536 5.464 L 13.243 4.171 L 9.412 8 L 13.244 11.832 L 14.536 10.539 C 15.075 9.996 16 10.379 16 11.143 Z" ></path></g>
+            <g id="compress-arrows-alt-solid"><path fill="currentColor" d="M 6.25 9 L 2.749 9 C 2.08 9 1.746 9.807 2.218 10.282 L 3.246 11.251 L 0.145 14.354 C -0.048 14.548 -0.048 14.867 0.145 15.061 L 0.939 15.855 C 1.133 16.048 1.452 16.048 1.646 15.855 L 4.749 12.751 L 5.721 13.782 C 6.193 14.254 7 13.92 7 13.251 L 7 9.75 C 7 9.335 6.665 9 6.25 9 Z M 9.75 7 L 13.251 7 C 13.92 7 14.254 6.19 13.782 5.718 L 12.751 4.749 L 15.855 1.646 C 16.048 1.452 16.048 1.133 15.855 0.939 L 15.061 0.145 C 14.867 -0.048 14.548 -0.048 14.354 0.145 L 11.251 3.249 L 10.279 2.218 C 9.807 1.746 9 2.08 9 2.749 L 9 6.25 C 9 6.665 9.335 7 9.75 7 Z M 12.751 11.251 L 13.782 10.279 C 14.254 9.807 13.92 9 13.251 9 L 9.75 9 C 9.335 9 9 9.335 9 9.75 L 9 13.251 C 9 13.92 9.81 14.254 10.282 13.782 L 11.251 12.754 L 14.354 15.858 C 14.548 16.052 14.867 16.052 15.061 15.858 L 15.855 15.064 C 16.048 14.87 16.048 14.551 15.855 14.357 L 12.751 11.251 Z M 5.718 2.221 L 4.749 3.249 L 1.646 0.145 C 1.452 -0.048 1.133 -0.048 0.939 0.145 L 0.145 0.939 C -0.048 1.133 -0.048 1.452 0.145 1.646 L 3.249 4.749 L 2.218 5.721 C 1.746 6.193 2.08 7 2.749 7 L 6.25 7 C 6.665 7 7 6.665 7 6.25 L 7 2.749 C 7 2.083 6.19 1.749 5.718 2.221 Z"></path></g>
+            <g id="arrow-right-solid"><path fill="currentColor" d="M 6.803 1.247 L 7.596 0.454 C 7.931 0.118 8.474 0.118 8.806 0.454 L 15.748 7.393 C 16.084 7.728 16.084 8.271 15.748 8.603 L 8.806 15.545 C 8.471 15.881 7.928 15.881 7.596 15.545 L 6.803 14.752 C 6.464 14.413 6.471 13.86 6.817 13.528 L 11.12 9.428 L 0.857 9.428 C 0.382 9.428 0 9.046 0 8.571 L 0 7.428 C 0 6.953 0.382 6.571 0.857 6.571 L 11.12 6.571 L 6.817 2.472 C 6.467 2.14 6.46 1.586 6.803 1.247 Z" ></path></g>
+            <g id="arrow-up-left-solid"><path fill="currentColor" d="M -0.718 9.338 L -1.735 8.347 C -2.165 7.927 -2.165 7.249 -1.735 6.833 L 7.166 -1.844 C 7.597 -2.263 8.293 -2.263 8.719 -1.844 L 17.62 6.829 C 18.05 7.249 18.05 7.927 17.62 8.343 L 16.603 9.333 C 16.168 9.758 15.457 9.749 15.032 9.316 L 9.777 3.941 L 9.777 16.77 C 9.777 17.364 9.287 17.842 8.677 17.842 L 7.212 17.842 C 6.603 17.842 6.112 17.364 6.112 16.77 L 6.112 3.941 L 0.853 9.32 C 0.427 9.758 -0.282 9.767 -0.718 9.338 Z" transform="matrix(0.707107, -0.707107, 0.707107, 0.707107, -3.218738, 7.913028)"></path></g>
+            <g id="arrow-up-solid"><path fill="currentColor" d="M 1.072 9.197 L 0.258 8.404 C -0.086 8.068 -0.086 7.525 0.258 7.194 L 7.379 0.251 C 7.723 -0.084 8.28 -0.084 8.621 0.251 L 15.742 7.19 C 16.086 7.525 16.086 8.068 15.742 8.4 L 14.928 9.194 C 14.58 9.533 14.012 9.526 13.671 9.179 L 9.468 4.88 L 9.468 15.143 C 9.468 15.617 9.076 16 8.588 16 L 7.415 16 C 6.928 16 6.536 15.617 6.536 15.143 L 6.536 4.88 L 2.329 9.183 C 1.988 9.533 1.42 9.54 1.072 9.197 Z"></path></g>
+            <g id="arrow-up-right-solid"><path fill="currentColor" d="M -0.548 9.401 L -1.566 8.41 C -1.996 7.991 -1.996 7.312 -1.566 6.898 L 7.335 -1.78 C 7.765 -2.2 8.463 -2.2 8.887 -1.78 L 17.788 6.893 C 18.219 7.312 18.219 7.991 17.788 8.406 L 16.771 9.396 C 16.335 9.821 15.625 9.812 15.201 9.379 L 9.946 4.005 L 9.946 16.832 C 9.946 17.427 9.456 17.905 8.847 17.905 L 7.38 17.905 C 6.771 17.905 6.281 17.427 6.281 16.832 L 6.281 4.005 L 1.023 9.384 C 0.597 9.821 -0.113 9.83 -0.548 9.401 Z" transform="matrix(0.707107, 0.707107, -0.707107, 0.707107, 7.965446, -3.420287)"></path></g>
+            <g id="atem-pattern-1"><path fill="currentColor" d="M 8.247 0.85 H 15.101 V 15.019 H 8.247 V 0.85 Z"></path></g>
+            <g id="atem-pattern-2"><path fill="currentColor" d="M 4.573 4.8 L 11.427 4.8 L 11.427 18.969 L 4.573 18.969 L 4.573 4.8 Z" transform="matrix(0, 1, -1, 0, 19.8845, 3.8845)"></path></g>
+            <g id="atem-pattern-3"><path fill="currentColor" d="M 15.084 8.774 L 15.084 15.312 L 0.915 15.312 L 0.915 8.774 Z M 15.085 0.793 L 15.085 7.313 L 0.916 7.313 L 0.916 0.793 Z"></path></g>
+            <g id="atem-pattern-4"><path fill="currentColor" d="M 7.279 15.083 L 0.741 15.083 L 0.741 0.914 L 7.279 0.914 Z M 15.26 15.084 L 8.74 15.084 L 8.74 0.915 L 15.26 0.915 Z"></path></g>
+            <g id="atem-pattern-5"><path fill="currentColor" d="M 7.279 7.427 L 0.741 7.427 L 0.741 0.914 L 7.279 0.914 Z M 15.26 7.428 L 8.74 7.428 L 8.74 0.915 L 15.26 0.915 Z M 7.279 15.113 L 0.741 15.113 L 0.741 8.617 L 7.279 8.617 Z M 15.26 15.114 L 8.74 15.114 L 8.74 8.618 L 15.26 8.618 Z"></path></g>
+            <g id="atem-pattern-6"><path fill="currentColor" d="M 4 4 H 12 V 12 H 4 V 4 Z"></path></g>
+            <g id="atem-pattern-7"><path fill="currentColor" d="M 8 2.343 L 13.657 8 L 8 13.657 L 2.343 8 L 8 2.343 Z"></path></g>
+            <g id="atem-pattern-8"><path fill="currentColor" d="M 13 8 A 5 5 0 0 1 8 13 A 5 5 0 0 1 3 8 A 5 5 0 0 1 8 3 A 5 5 0 0 1 13 8 Z"></path></g>
+            <g id="atem-pattern-9"><path fill="currentColor" d="M 0.8 0.8 L 8.8 0.8 L 8.8 8.8 L 0.8 8.8 L 0.8 0.8 Z"></path></g>
+            <g id="atem-pattern-10"><path fill="currentColor" d="M 0.8 7.2 L 8.8 7.2 L 8.8 15.2 L 0.8 15.2 L 0.8 7.2 Z"></path></g>
+            <g id="atem-pattern-11"><path fill="currentColor" d="M 7.2 7.2 L 15.2 7.2 L 15.2 15.2 L 7.2 15.2 L 7.2 7.2 Z"></path></g>
+            <g id="atem-pattern-12"><path fill="currentColor" d="M 7.2 0.8 L 15.2 0.8 L 15.2 8.8 L 7.2 8.8 L 7.2 0.8 Z"></path></g>
+            <g id="atem-pattern-13"><path fill="currentColor" d="M 4 0.8 L 12 0.8 L 12 8.8 L 4 8.8 L 4 0.8 Z"></path></g>
+            <g id="atem-pattern-14"><path fill="currentColor" d="M 4 7.2 L 12 7.2 L 12 15.2 L 4 15.2 L 4 7.2 Z"></path></g>
+            <g id="atem-pattern-15"><path fill="currentColor" d="M 0.8 4 L 8.8 4 L 8.8 12 L 0.8 12 L 0.8 4 Z"></path></g>
+            <g id="atem-pattern-16"><path fill="currentColor" d="M 7.2 4 L 15.2 4 L 15.2 12 L 7.2 12 L 7.2 4 Z"></path></g>
+            <g id="atem-pattern-17"><path fill="currentColor" d="M 15.2 0.801 L 0.8 15.2 L 0.8 0.8 L 15.2 0.801 Z"></path></g>
+            <g id="atem-pattern-18"><path fill="currentColor" d="M 0.8 0.801 L 15.2 15.2 L 15.2 0.8 L 0.8 0.801 Z"></path></g>
+            <g id="atem-multi-layout-1"><path fill="currentColor" d="M 8.5 1 L 15 1 L 15 7.5 L 8.5 7.5 Z M 1 1 L 7.6 1 L 7.6 7.5 L 1 7.5 Z M 12 8.5 L 15 8.5 L 15 11.5 L 12 11.5 Z M 12 12 L 15 12 L 15 15 L 12 15 Z M 8.5 8.5 L 11.5 8.5 L 11.5 11.5 L 8.5 11.5 Z M 8.5 12 L 11.5 12 L 11.5 15 L 8.5 15 Z M 4.5 8.5 L 7.5 8.5 L 7.5 11.5 L 4.5 11.5 Z M 4.5 12 L 7.5 12 L 7.5 15 L 4.5 15 Z M 1 8.5 L 4 8.5 L 4 11.5 L 1 11.5 Z M 1 12 L 4 12 L 4 15 L 1 15 Z"></path></g>
+            <g id="atem-multi-layout-2"><path fill="currentColor" d="M 8.5 8.5 L 15 8.5 L 15 15 L 8.5 15 Z M 1 8.5 L 7.6 8.5 L 7.6 15 L 1 15 Z M 12 1 L 15 1 L 15 4 L 12 4 Z M 12 4.5 L 15 4.5 L 15 7.5 L 12 7.5 Z M 8.5 1 L 11.5 1 L 11.5 4 L 8.5 4 Z M 8.5 4.5 L 11.5 4.5 L 11.5 7.5 L 8.5 7.5 Z M 4.5 1 L 7.5 1 L 7.5 4 L 4.5 4 Z M 4.5 4.5 L 7.5 4.5 L 7.5 7.5 L 4.5 7.5 Z M 1 1 L 4 1 L 4 4 L 1 4 Z M 1 4.5 L 4 4.5 L 4 7.5 L 1 7.5 Z"></path></g>
+            <g id="atem-multi-layout-3"><path fill="currentColor" d="M 1 8.5 L 7.5 8.5 L 7.5 15 L 1 15 Z M 1 1 L 7.5 1 L 7.5 7.5 L 1 7.5 Z M 12 8.5 L 15 8.5 L 15 11.5 L 12 11.5 Z M 12 12 L 15 12 L 15 15 L 12 15 Z M 8.5 8.5 L 11.5 8.5 L 11.5 11.5 L 8.5 11.5 Z M 8.5 12 L 11.5 12 L 11.5 15 L 8.5 15 Z M 12 1 L 15 1 L 15 4 L 12 4 Z M 12 4.5 L 15 4.5 L 15 7.5 L 12 7.5 Z M 8.5 1 L 11.5 1 L 11.5 4 L 8.5 4 Z M 8.5 4.5 L 11.5 4.5 L 11.5 7.5 L 8.5 7.5 Z"></path></g>
+            <g id="atem-multi-layout-4"><path fill="currentColor" d="M 8.5 8.5 L 15 8.5 L 15 15 L 8.5 15 Z M 8.5 1 L 15 1 L 15 7.5 L 8.5 7.5 Z M 4.5 8.5 L 7.5 8.5 L 7.5 11.5 L 4.5 11.5 Z M 4.5 12 L 7.5 12 L 7.5 15 L 4.5 15 Z M 1 8.5 L 4 8.5 L 4 11.5 L 1 11.5 Z M 1 12 L 4 12 L 4 15 L 1 15 Z M 4.5 1 L 7.5 1 L 7.5 4 L 4.5 4 Z M 4.5 4.5 L 7.5 4.5 L 7.5 7.5 L 4.5 7.5 Z M 1 1 L 4 1 L 4 4 L 1 4 Z M 1 4.5 L 4 4.5 L 4 7.5 L 1 7.5 Z"></path></g>
+        </defs>
+    </svg>
+
+</body>
 </html>
