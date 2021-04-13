@@ -1513,7 +1513,7 @@
     <script>
         
         var NodeRedAPI = {};
-        var specUrl = 'http-api/swagger.json';
+        var specUrl = 'http://192.168.10.111:1880/http-api/swagger.json';
         var swaggerClient = new SwaggerClient(specUrl);
         swaggerClient.then(client => {
             console.log(client.apis);
