@@ -259,7 +259,7 @@
         <div class="row">
             <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
-                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Main');" id="btnMenuMain">Main</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block " ng-click="menudisplay.showPanel('Main');" id="btnMenuMain">Main</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Display');" id="btnMenuDisplay">Display</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('VideoRouting');" id="btnMenuVideoRouting">Routing</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Power');" id="btnMenuPower">Power</button>
@@ -273,28 +273,28 @@
     <div id="pageMain" class="container-fluid">
         <!-- AVSystemON -->
         <div class="row colrow">
-            <button class="btn btn-success col-md-3" ng-click="NodeRedAPI.preset.systemon();">ON</button>
+            <button class="btn btn-success col-md-3 preset" data-systempreset="systemon" >ON</button>
             <div class="btn-default col-md-6" ><h4>AV Systems</h4><h3><span id="txtSystemStatus" class="badge badge-danger">{PWR_STATUS}</span></h3></div>
-            <button class="btn btn-danger col-md-3" ng-click="NodeRedAPI.preset.systemoff()">OFF</button>
+            <button class="btn btn-danger col-md-3 preset" data-systempreset="systemoff" >OFF</button>
         </div>
         <div class="row colrow">
-            <button class="btn btn-warning col-md-3" ng-click="NodeRedAPI.relay.screenup({screenid:1});NodeRedAPI.relay.screenup({screenid:2});">Screen UP</button>
-            <button class="btn btn-warning col-md-3" ng-click="NodeRedAPI.relay.screendown({screenid:1});NodeRedAPI.relay.screendown({screenid:2});">Screen DOWN</button>
-            <button class="btn btn-warning col-md-3" ng-click="NodeRedAPI.epspn.poweron({proj:1});NodeRedAPI.epspn.poweron({proj:2});">Proj ON</button>
-            <button class="btn btn-warning col-md-3" ng-click="NodeRedAPI.epspn.poweroff({proj:1});NodeRedAPI.epspn.powerofff({proj:2});">Proj OFF</button>
+            <button class="btn btn-warning col-md-3 relay" data-screenup="1,2" >Screen UP</button>
+            <button class="btn btn-warning col-md-3 relay" data-screendown="1,2" >Screen DOWN</button>
+            <button class="btn btn-warning col-md-3 epson" data-projpoweron="1,2" >Proj ON</button>
+            <button class="btn btn-warning col-md-3 epson" data-projpoweroff="1,2" >Proj OFF</button>
         </div>
         <div class="row colrow">
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.videohub.displayPreset({preset:'worship'})" >Service Display</button>
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.videohub.displayPreset({preset:'baptism'})">Baptism Display</button>
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.videohub.displayPreset({preset:'camproj'})">CAM to Projectors</button>
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.videohub.displayPreset({preset:'pc1proj'})">PC1 to Projectors</button>
+            <button class="btn btn-info col-md-3 videorouting" data-videopreset="worship" >Service Display</button>
+            <button class="btn btn-info col-md-3 videorouting" data-videopreset="baptism" >Baptism Display</button>
+            <button class="btn btn-info col-md-3 videorouting" data-videopreset="camproj" >CAM to Projectors</button>
+            <button class="btn btn-info col-md-3 videorouting" data-videopreset="pc1proj" >PC1 to Projectors</button>
             
         </div>
         <div class="row colrow">
-            <button class="btn btn-info btn-purple col-md-3" ng-click="NodeRedAPI.relay.button({port:3})">LIGHTS ON</button>
-            <button class="btn btn-info btn-purple col-md-3" ng-click="NodeRedAPI.relay.button({port:4})">LIGHTS OFF</button>
-            <button class="btn btn-info btn-purple col-md-3" ng-click="NodeRedAPI.relay.button({port:1});NodeRedAPI.relay.button({port:2})">Full Dim</button>
-            <button class="btn btn-info btn-purple col-md-3" ng-click="NodeRedAPI.relay.button({port:2})">Front Dim</button>
+            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="3" >LIGHTS ON</button>
+            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="4" >LIGHTS OFF</button>
+            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="1,2" >Full Dim</button>
+            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="2" >Front Dim</button>
         </div>
     </div>
 
@@ -312,33 +312,33 @@
                 <div class="col-md-4">
                     <!-- Left Projector -->
                     <div class="row colrow">
-                        <button class="btn btn-success col-sm-3" ng-click="NodeRedAPI.epson.poweron({proj:1})">ON</button>
+                        <button class="btn btn-success col-sm-3 epson" data-projpoweron="1" >ON</button>
                         <div class="btn-default col-sm-6">
                             <h4>Proj. LEFT</h4>
                             <span id="txtProjLPWR" class="badge badge-danger">POWER</span>
                             <span id="txtProjLLampHrs" class="badge badge-primary">LHrs</span><br />
                             <span id="txtProjLSource" class="badge badge-primary">SOURCE</span>
                         </div>
-                        <button class="btn btn-danger col-sm-3" ng-click="NodeRedAPI.epson.poweron({proj:1})">OFF</button>
+                        <button class="btn btn-danger col-sm-3 epson" data-projpoweroff="1" >OFF</button>
                     </div>
 
                     <!-- Right Projector -->
                     <div class="row colrow">
-                        <button class="btn btn-success col-sm-3" ng-click="NodeRedAPI.epson.poweron({proj:2})">ON</button>
+                        <button class="btn btn-success col-sm-3 epson" data-projpoweron="2" >ON</button>
                         <div class="btn-default col-sm-6">
                             <h4>Proj. RIGHT</h4>
                             <span id="txtProjRPWR" class="badge badge-danger">POWER</span>
                             <span id="txtProjRLampHrs" class="badge badge-primary">LHrs</span><br />
                             <span id="txtProjRSource" class="badge badge-primary">SOURCE</span>
                         </div>
-                        <button class="btn btn-danger col-sm-3" ng-click="NodeRedAPI.epson.poweron({proj:2})">OFF</button>
+                        <button class="btn btn-danger col-sm-3 epson" data-projpoweroff="2" >OFF</button>
                     </div>
 
                     <!-- Left & Right Projectors -->
                     <div class="row colrow">
-                        <button class="btn btn-success col-sm-3" ng-click="NodeRedAPI.epspn.poweron({proj:1});NodeRedAPI.epspn.poweron({proj:2});">ON</button>
+                        <button class="btn btn-success col-sm-3 epson" data-projpoweron="1,2" >ON</button>
                         <button class="btn btn-default col-sm-6" disabled="disabled">PROJECTORS</button>
-                        <button class="btn btn-danger col-sm-3" ng-click="NodeRedAPI.epspn.poweroff({proj:1});NodeRedAPI.epspn.powerofff({proj:2});">OFF</button>
+                        <button class="btn btn-danger col-sm-3 epson" data-projpoweroff="1,2" >OFF</button>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -402,22 +402,22 @@
                 <button class="btn col-md-3 btn-default" disabled>Right Window<br />Blind</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.screenup({screenid:1})" id="dispLPROJSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.screenup({screenid:2})" id="dispRPROJSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.blindup({blindid:1})" id="dispLWINSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.blindup({blindid:2})" id="dispRWINSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info relay" data-screenup="1" id="dispLPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info relay" data-screenup="2" id="dispRPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info relay" data-blindup="1" id="dispLWINSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info relay" data-blindup="2" id="dispRWINSCRUP" >UP</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-danger" ng-click="NodeRedAPI.relay.screenstop({screenid:1})" >STOP</button>
-                <button class="btn col-md-3 btn-danger" ng-click="NodeRedAPI.relay.screenstop({screenid:2})" >STOP</button>
-                <button class="btn col-md-3 btn-danger" ng-click="NodeRedAPI.relay.blindstop({blindid:1})" >STOP</button>
-                <button class="btn col-md-3 btn-danger" ng-click="NodeRedAPI.relay.blindstop({blindid:2})" >STOP</button>
+                <button class="btn col-md-3 btn-danger relay" data-screenstop="1" >STOP</button>
+                <button class="btn col-md-3 btn-danger relay" data-screenstop="2" >STOP</button>
+                <button class="btn col-md-3 btn-danger relay" data-blindstop="1" >STOP</button>
+                <button class="btn col-md-3 btn-danger relay" data-blindstop="2" >STOP</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.screendown({screenid:1})" id="dispLPROJSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.screendown({screenid:2})" id="dispRPROJSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.blinddown({blindid:1})" id="dispLWINSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info" ng-click="NodeRedAPI.relay.blinddown({blindid:2})" id="dispRWINSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info relay" data-screendown="1" id="dispLPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info relay" data-screendown="2" id="dispRPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info relay" data-blinddown="1" id="dispLWINSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info relay" data-blinddown="2" id="dispRWINSCRDOWN" >DOWN</button>
             </div>
         </div>
     </div>
@@ -436,51 +436,51 @@
 
         <div id="secPageVideoFavorites" data-videosrc="preset" >
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="camall" >CAM to All</button>
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="pc1all" >PC1 to All</button>
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="pc2all" >PC2 to All</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="camall" >CAM to All</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="pc1all" >PC1 to All</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="pc2all" >PC2 to All</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="worship" >Service Display</button>
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="baptism" >Baptism Display</button>
-                <button type="button" class="btn btn-info col-md-4" ng-click="">Sunday Service 2</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="worship" >Service Display</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="baptism" >Baptism Display</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" ng-click="">Sunday Service 2</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="camproj" >CAM to Projectors</button>
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="pc1roj" >PC1 to Projectors</button>
-                <button type="button" class="btn btn-info col-md-4" data-videopreset="pc2roj" >PC2 to Projectors</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="camproj" >CAM to Projectors</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="pc1roj" >PC1 to Projectors</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videopreset="pc2roj" >PC2 to Projectors</button>
             </div>
         </div>
 
         <div id="secPageVideoPC1" data-videosrc="PC1" >
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videodest="0" id="routePC1PROJLEFT" >ProjLEFT</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodestgroup="proj" >PROJECTORS</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodest="1" id="routePC1PROJRIGHT" >ProjRIGHT</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="0" id="routePC1PROJLEFT" >ProjLEFT</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodestgroup="proj" >PROJECTORS</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="1" id="routePC1PROJRIGHT" >ProjRIGHT</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videodest="4" id="routePC1UMEZZLEFT" >MezzLEFT</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodestgroup="mezz" >MEZZANINE</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodest="5" id="routePC1UMEZZRIGHT" >MezzRIGHT</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="4" id="routePC1UMEZZLEFT" >MezzLEFT</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodestgroup="mezz" >MEZZANINE</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="5" id="routePC1UMEZZRIGHT" >MezzRIGHT</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videodest="2" id="routePC1STAGESIDE" >StageSIDES</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodestgroup="stage" >STAGE</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodest="3" id="routePC1STAGECENTER" >StageCENTER</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="2" id="routePC1STAGESIDE" >StageSIDES</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodestgroup="stage" >STAGE</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="3" id="routePC1STAGECENTER" >StageCENTER</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-info col-md-4" data-videodest="6" id="routePC1WELCENTER" >Welcome Center</button>
-                <button type="button" class="btn btn-info col-md-4" data-videdestgroup="rec" >ALL REC.</button>
-                <button type="button" class="btn btn-info col-md-4" data-videodest="7" id="routePC1RECOUT" >Rec. Out</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="6" id="routePC1WELCENTER" >Welcome Center</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videdestgroup="rec" >ALL REC.</button>
+                <button type="button" class="btn btn-info col-md-4 videorouting" data-videodest="7" id="routePC1RECOUT" >Rec. Out</button>
             </div>
 
             <div class="row colrow">
-                <button type="button" class="btn btn-danger btn-lg col-md-12" data-videdestgroup="all" >ALL DISPLAYS</button>
+                <button type="button" class="btn btn-danger btn-lg col-md-12 videorouting" data-videdestgroup="all" >ALL DISPLAYS</button>
             </div>
         </div>
         <div id="secPageVideoPC2" data-videosrc="PC2" ></div>
@@ -499,11 +499,11 @@
         </div>
         <div id="secPowerFurman">
             <div class="row colrow">
-                <button class="btn btn-success col-md-3" ng-click="NodeRedAPI.furman.sequenceon();">ON</button>
-                <button class="btn btn-default col-md-6">
+                <button class="btn btn-success col-md-3 furman" data-seqall="on" >ON</button>
+                <button class="btn btn-default col-md-6" >
                     <h4>POWER SEQUENCER&nbsp;&nbsp;<span class="badge btn-outline-primary" id="btnSeqAllInfo" >Bank Info</span></h4>
                 </button>
-                <button class="btn btn-danger col-md-3" ng-click="NodeRedAPI.furman.sequenceon();">OFF</button>
+                <button class="btn btn-danger col-md-3 furman" data-seqall="off" >OFF</button>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -525,8 +525,8 @@
                                     <div class="SeqBankName" style="display:none">
                                         <h5>{banklabel1}</h5>
                                     </div>        
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="on" >ON</button>
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="off" >OFF</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="on" >ON</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="off" >OFF</button>
                                 </div>
                                 <div class="col-sm-4" data-seqbank="2" >
                                     <div class="SeqBankStatus" >
@@ -535,8 +535,8 @@
                                     <div class="SeqBankName" style="display:none">
                                         <h5>{banklabel2}</h5>
                                     </div>        
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="on" >ON</button>
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="off" >OFF</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="on" >ON</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="off" >OFF</button>
                                 </div>
                                 <div class="col-sm-4" data-seqbank="3" >
                                     <div class="SeqBankStatus" >
@@ -545,8 +545,8 @@
                                     <div class="SeqBankName" style="display:none">
                                         <h5>{banklabel3}</h5>
                                     </div>        
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="on" >ON</button>
-                                    <button class="btn btn-info col-sm-6" data-bankcmd="off" >OFF</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="on" >ON</button>
+                                    <button class="btn btn-info col-sm-6 furman" data-bankcmd="off" >OFF</button>
                                 </div>
                             </div>
                         </div>
@@ -583,8 +583,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <button class="btn btn-info col-sm-5" data-iotcmd="on" >ON</button>
-                                    <button class="btn btn-info col-sm-5" data-iotcmd="off" >OFF</button>
+                                    <button class="btn btn-info col-sm-5 hoobs" data-iotcmd="on" >ON</button>
+                                    <button class="btn btn-info col-sm-5 hoobs" data-iotcmd="off" >OFF</button>
                                 </div>
                             </div>
                         </div>
@@ -602,14 +602,14 @@
 
     <div id="pageLights" class="container-fluid">
         <div class="row colrow">
-            <button class="btn btn-success col-md-4" ng-click="NodeRedAPI.relay.button({port:3})" >ALL ON</button>
-            <button class="btn btn-danger col-md-4" ng-click="NodeRedAPI.relay.button({port:4})" >ALL OFF</button>
-            <button class="btn btn-warning col-md-4" ng-click="NodeRedAPI.relay.button({port:1});NodeRedAPI.relay.button({port:2})">Full DIM</button>
+            <button class="btn btn-success col-md-4 relay" data-relaybutton="3" >ALL ON</button>
+            <button class="btn btn-danger col-md-4 relay" data-relaybutton="4" >ALL OFF</button>
+            <button class="btn btn-warning col-md-4 relay" data-relaybutton="1,2" >Full DIM</button>
         </div>
         <div class="row colrow">
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.relay.button({port:2})">Front Dim</button>
-            <button class="btn btn-info col-md-3" ng-click="NodeRedAPI.relay.button({port:1})">Back Dim</button>
-			<button class="btn btn-info col-md-3" ng-click="NodeRedAPI.relay.button({port:5})">Mezzanine</button>
+            <button class="btn btn-info col-md-3 relay" data-relaybutton="2" >Front Dim</button>
+            <button class="btn btn-info col-md-3 relay" data-relaybutton="1" >Back Dim</button>
+			<button class="btn btn-info col-md-3 relay" data-relaybutton="5" >Mezzanine</button>
         </div>
     </div>
 
@@ -1513,7 +1513,7 @@
     <script>
         
         var NodeRedAPI = {};
-        var specUrl = 'http://192.168.10.111:1880/http-api/swagger.json';
+        var specUrl = 'http://192.168.123.72:1880/http-api/swagger.json';
         var swaggerClient = new SwaggerClient(specUrl);
         swaggerClient.then(client => {
             console.log(client.apis);
@@ -2085,6 +2085,106 @@
                 
                     //set default display tab
                     $scope.menudisplay.showPanel("Main");
+
+                    //set epson projector button click function
+                    $("button.epson").click(function(){
+                        if ($(this).data("projpoweron")!=undefined) {
+                            if (isNaN($(this).data("projpoweron"))) {
+                                NodeRedAPI.epson.poweron({proj:$(this).data("projpoweron")});
+                            } else {
+                                $(this).data("projpoweron").split(",").foreach(function(element){
+                                    NodeRedAPI.epson.poweron({proj:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("projpoweroff")!=undefined) {
+                            if (isNaN($(this).data("projpoweroff"))) {
+                                NodeRedAPI.epson.poweroff({proj:$(this).data("projpoweroff")});
+                            } else {
+                                $(this).data("projpoweroff").split(",").foreach(function(element){
+                                    NodeRedAPI.epson.poweroff({proj:element});
+                                    sleep(500);
+                                });
+                            }
+                        }
+                    });
+
+                    //set relay button click function
+                    $("button.relay").click(function(){
+                        if ($(this).data("relaybutton")!=undefined) {
+                            if (isNaN($(this).data("relaybutton"))) {
+                                NodeRedAPI.relay.button({port:$(this).data("relaybutton")});
+                            } else {
+                                $(this).data("relaybutton").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.button({port:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("screenup")!=undefined) {
+                            if (isNaN($(this).data("screenup"))) {
+                                NodeRedAPI.relay.screenup({screenid:$(this).data("screenup")});
+                            } else {
+                                $(this).data("screenup").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.screenup({screenid:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("screendown")!=undefined) {
+                            if (isNaN($(this).data("screendown"))) {
+                                NodeRedAPI.relay.screendown({screenid:$(this).data("screendown")});
+                            } else {
+                                $(this).data("screendown").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.screendown({screenid:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("screenstop")!=undefined) {
+                            if (isNaN($(this).data("screenstop"))) {
+                                NodeRedAPI.relay.screenstop({screenid:$(this).data("screenstop")});
+                            } else {
+                                $(this).data("screenstop").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.screenstop({screenid:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("blindup")!=undefined) {
+                            if (isNaN($(this).data("blindup"))) {
+                                NodeRedAPI.relay.blindup({blindid:$(this).data("blindup")});
+                            } else {
+                                $(this).data("blindup").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.blindup({blindid:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("blinddown")!=undefined) {
+                            if (isNaN($(this).data("blinddown"))) {
+                                NodeRedAPI.relay.blinddown({blindid:$(this).data("blinddown")});
+                            } else {
+                                $(this).data("blinddown").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.blinddown({blindid:element});
+                                    sleep(500);
+                                });
+                            }
+                        } else if ($(this).data("blindstop")!=undefined) {
+                            if (isNaN($(this).data("blindstop"))) {
+                                NodeRedAPI.relay.blindstop({blindid:$(this).data("blindstop")});
+                            } else {
+                                $(this).data("blindstop").split(",").foreach(function(element){
+                                    NodeRedAPI.relay.blindstop({blindid:element});
+                                    sleep(500);
+                                });
+                            }
+                        }
+                    });
+
+                    //set preset buttons click function
+                    $("button.preset").click(function(){
+                        for(var item in NodeRedAPI.preset) {
+                            if (item.toString()==$(this).data("systempreset")) {
+                                eval("NodeRedAPI.preset."+item+"();");      
+                            }
+                        }
+                    });
                     
                     //Duplicate Video Routing Destinations
                     $("[id*=secPageVideo]").each(function(index){
@@ -2097,7 +2197,7 @@
                     });
 
                     //set Video Routing Button Click function
-                    $("[id*=secPageVideo] button").click(function(){
+                    $("button.videorouting").click(function(){
                         var videosrc = $(this).parent().parent().data("videosrc");
                         if($(this).data("videopreset")!=undefined) {
                             NodeRedAPI.videohub.displayPreset({
@@ -2144,21 +2244,32 @@
                         );
                     });
                     
-                    //set bank on/off click function
-                    $("#secPowerFurman button").click(function(){
-                        var seqno  = $(this).parent().parent().parent().parent().data("seqdev");
-                        var bankno = $(this).parent().data("seqbank");
-                        var buttoncmd = $(this).data("bankcmd");
-                        
-                        switch(buttoncmd){
-                            case "on":
-                                NodeRedAPI.furman.bankon({seqno:seqno,bank:bankno});
-                                break;
-                            case "off":
-                                NodeRedAPI.furman.bankoff({seqno:seqno,bank:bankno});
-                                break;
+                    //set furman seqall, bank on/off click function
+                    $("button.furman").click(function(){
+                        if ($(this).data("bankcmd")!=undefined) {
+                            var seqno  = $(this).parent().parent().parent().parent().data("seqdev");
+                            var bankno = $(this).parent().data("seqbank");
+                            var buttoncmd = $(this).data("bankcmd");
+                            
+                            switch(buttoncmd){
+                                case "on":
+                                    NodeRedAPI.furman.bankon({seqno:seqno,bank:bankno});
+                                    break;
+                                case "off":
+                                    NodeRedAPI.furman.bankoff({seqno:seqno,bank:bankno});
+                                    break;
+                            }
+                        } else if ($(this).data("seqall")!=undefined) {
+                            var seqcmd = $(this).data("seqall");
+                            switch(seqcmd){
+                                case "on":
+                                    NodeRedAPI.furman.sequenceon();
+                                    break;
+                                case "off":
+                                    NodeRedAPI.furman.sequenceoff();
+                                    break;
+                            }
                         }
-
                     }); 
 
                     //toggle sequencer bank info
@@ -2214,7 +2325,7 @@
                     });
 
                     //set IOT on/off click function
-                    $("#secPowerIOT button").click(function(){
+                    $("button.hoobs").click(function(){
                         var seqno  = $(this).parent().parent().parent().parent().data("iotdev");
                         var buttoncmd = $(this).data("iotcmd");
                         
