@@ -259,7 +259,7 @@
         <div class="row">
             <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
-                    <button type="button" class="btn btn-secondary btn-lg btn-block " ng-click="menudisplay.showPanel('Main');" id="btnMenuMain">Main</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Main');" id="btnMenuMain">Main</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Display');" id="btnMenuDisplay">Display</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('VideoRouting');" id="btnMenuVideoRouting">Routing</button>
                     <button type="button" class="btn btn-secondary btn-lg btn-block" ng-click="menudisplay.showPanel('Power');" id="btnMenuPower">Power</button>
@@ -1519,6 +1519,7 @@
         
         var NodeRedAPI = {};
         var specUrl = 'http://192.168.123.72:1880/http-api/swagger.json';
+        //var specUrl = 'http://192.168.10.111:1880/http-api/swagger.json';
         var swaggerClient = new SwaggerClient(specUrl);
         swaggerClient.then(client => {
             console.log(client.apis);
@@ -2088,21 +2089,21 @@
                     //set epson projector button click function
                     $("button.epson").click(function(){
                         if ($(this).data("projpoweron")!=undefined) {
-                            if (isNaN($(this).data("projpoweron"))) {
+                            if (!isNaN($(this).data("projpoweron"))) {
                                 NodeRedAPI.epson.poweron({proj:$(this).data("projpoweron")});
                             } else {
-                                $(this).data("projpoweron").split(",").foreach(function(element){
+                                $(this).data("projpoweron").split(",").forEach(function(element){
                                     NodeRedAPI.epson.poweron({proj:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         } else if ($(this).data("projpoweroff")!=undefined) {
-                            if (isNaN($(this).data("projpoweroff"))) {
+                            if (!isNaN($(this).data("projpoweroff"))) {
                                 NodeRedAPI.epson.poweroff({proj:$(this).data("projpoweroff")});
                             } else {
-                                $(this).data("projpoweroff").split(",").foreach(function(element){
+                                $(this).data("projpoweroff").split(",").forEach(function(element){
                                     NodeRedAPI.epson.poweroff({proj:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         }
@@ -2111,12 +2112,12 @@
                     //set relay button click function
                     $("button.light").click(function(){
                         if ($(this).data("relaybutton")!=undefined) {
-                            if (isNaN($(this).data("relaybutton"))) {
-                                NodeRedAPI.relay.button({port:$(this).data("relaybutton")});
+                            if (!isNaN($(this).data("relaybutton"))) {
+                                NodeRedAPI.relay.button({port:$(this).data("relaybutton").toString()});
                             } else {
-                                $(this).data("relaybutton").split(",").foreach(function(element){
+                                $(this).data("relaybutton").split(",").forEach(function(element){
                                     NodeRedAPI.relay.button({port:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         }
@@ -2125,30 +2126,30 @@
                     //set screen buttons click function
                     $("button.screen").click(function(){
                         if ($(this).data("screenup")!=undefined) {
-                            if (isNaN($(this).data("screenup"))) {
+                            if (!isNaN($(this).data("screenup"))) {
                                 NodeRedAPI.relay.screenup({screenid:$(this).data("screenup")});
                             } else {
-                                $(this).data("screenup").split(",").foreach(function(element){
+                                $(this).data("screenup").split(",").forEach(function(element){
                                     NodeRedAPI.relay.screenup({screenid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         } else if ($(this).data("screendown")!=undefined) {
-                            if (isNaN($(this).data("screendown"))) {
+                            if (!isNaN($(this).data("screendown"))) {
                                 NodeRedAPI.relay.screendown({screenid:$(this).data("screendown")});
                             } else {
-                                $(this).data("screendown").split(",").foreach(function(element){
+                                $(this).data("screendown").split(",").forEach(function(element){
                                     NodeRedAPI.relay.screendown({screenid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         } else if ($(this).data("screenstop")!=undefined) {
-                            if (isNaN($(this).data("screenstop"))) {
+                            if (!isNaN($(this).data("screenstop"))) {
                                 NodeRedAPI.relay.screenstop({screenid:$(this).data("screenstop")});
                             } else {
-                                $(this).data("screenstop").split(",").foreach(function(element){
+                                $(this).data("screenstop").split(",").forEach(function(element){
                                     NodeRedAPI.relay.screenstop({screenid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         }
@@ -2157,30 +2158,30 @@
                     //set blinds button click function
                     $("button.blind").click(function(){
                         if ($(this).data("blindup")!=undefined) {
-                            if (isNaN($(this).data("blindup"))) {
+                            if (!isNaN($(this).data("blindup"))) {
                                 NodeRedAPI.relay.blindup({blindid:$(this).data("blindup")});
                             } else {
-                                $(this).data("blindup").split(",").foreach(function(element){
+                                $(this).data("blindup").split(",").forEach(function(element){
                                     NodeRedAPI.relay.blindup({blindid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         } else if ($(this).data("blinddown")!=undefined) {
-                            if (isNaN($(this).data("blinddown"))) {
+                            if (!isNaN($(this).data("blinddown"))) {
                                 NodeRedAPI.relay.blinddown({blindid:$(this).data("blinddown")});
                             } else {
-                                $(this).data("blinddown").split(",").foreach(function(element){
+                                $(this).data("blinddown").split(",").forEach(function(element){
                                     NodeRedAPI.relay.blinddown({blindid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         } else if ($(this).data("blindstop")!=undefined) {
-                            if (isNaN($(this).data("blindstop"))) {
+                            if (!isNaN($(this).data("blindstop"))) {
                                 NodeRedAPI.relay.blindstop({blindid:$(this).data("blindstop")});
                             } else {
-                                $(this).data("blindstop").split(",").foreach(function(element){
+                                $(this).data("blindstop").split(",").forEach(function(element){
                                     NodeRedAPI.relay.blindstop({blindid:element});
-                                    sleep(500);
+                                    sleep(1000);
                                 });
                             }
                         }
@@ -2474,6 +2475,14 @@
             this.Name = Name;
             this.Code = Code;
             this.Description = Description; 
+        }
+
+        function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
         }
 
     </script>
