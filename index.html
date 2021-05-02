@@ -270,7 +270,7 @@
         </div>
     </div>
 
-    <div id="pageMain" class="container-fluid">
+    <div id="pageMain" class="container-fluid" >
         <!-- AVSystemON -->
         <div class="row colrow">
             <button class="btn btn-success col-md-3 preset" data-systempreset="systemon" >ON</button>
@@ -278,8 +278,13 @@
             <button class="btn btn-danger col-md-3 preset" data-systempreset="systemoff" >OFF</button>
         </div>
         <div class="row colrow">
-            <button class="btn btn-warning col-md-3 relay" data-screenup="1,2" >Screen UP</button>
-            <button class="btn btn-warning col-md-3 relay" data-screendown="1,2" >Screen DOWN</button>
+            <button class="btn btn-warning col-md-3 preset" data-systempreset="camsyson" >Cam System ON</button>
+            <button class="btn btn-warning col-md-3 preset" data-systempreset="camsysoff" >Cam System OFF</button>
+            <button class="btn btn-warning col-md-3 preset" data-screendown="leavemezz" >Leave Mezz</button>
+        </div>
+        <div class="row colrow">
+            <button class="btn btn-warning col-md-3 screen" data-screenup="1,2" >Screen UP</button>
+            <button class="btn btn-warning col-md-3 screen" data-screendown="1,2" >Screen DOWN</button>
             <button class="btn btn-warning col-md-3 epson" data-projpoweron="1,2" >Proj ON</button>
             <button class="btn btn-warning col-md-3 epson" data-projpoweroff="1,2" >Proj OFF</button>
         </div>
@@ -291,14 +296,14 @@
             
         </div>
         <div class="row colrow">
-            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="3" >LIGHTS ON</button>
-            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="4" >LIGHTS OFF</button>
-            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="1,2" >Full Dim</button>
-            <button class="btn btn-info btn-purple col-md-3 relay" data-relaybutton="2" >Front Dim</button>
+            <button class="btn btn-info btn-purple col-md-3 light" data-relaybutton="3" >LIGHTS ON</button>
+            <button class="btn btn-info btn-purple col-md-3 light" data-relaybutton="4" >LIGHTS OFF</button>
+            <button class="btn btn-info btn-purple col-md-3 light" data-relaybutton="1,2" >Full Dim</button>
+            <button class="btn btn-info btn-purple col-md-3 light" data-relaybutton="2" >Front Dim</button>
         </div>
     </div>
 
-    <div id="pageDisplay" class="container-fluid">
+    <div id="pageDisplay" class="container-fluid"  >
         <div class="row">
             <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
@@ -402,27 +407,27 @@
                 <button class="btn col-md-3 btn-default" disabled>Right Window<br />Blind</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-info relay" data-screenup="1" id="dispLPROJSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info relay" data-screenup="2" id="dispRPROJSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info relay" data-blindup="1" id="dispLWINSCRUP" >UP</button>
-                <button class="btn col-md-3 btn-info relay" data-blindup="2" id="dispRWINSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info screen" data-screenup="1" id="dispLPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info screen" data-screenup="2" id="dispRPROJSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info blind" data-blindup="1" id="dispLWINSCRUP" >UP</button>
+                <button class="btn col-md-3 btn-info blind" data-blindup="2" id="dispRWINSCRUP" >UP</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-danger relay" data-screenstop="1" >STOP</button>
-                <button class="btn col-md-3 btn-danger relay" data-screenstop="2" >STOP</button>
-                <button class="btn col-md-3 btn-danger relay" data-blindstop="1" >STOP</button>
-                <button class="btn col-md-3 btn-danger relay" data-blindstop="2" >STOP</button>
+                <button class="btn col-md-3 btn-danger screen" data-screenstop="1" >STOP</button>
+                <button class="btn col-md-3 btn-danger screen" data-screenstop="2" >STOP</button>
+                <button class="btn col-md-3 btn-danger blind" data-blindstop="1" >STOP</button>
+                <button class="btn col-md-3 btn-danger blind" data-blindstop="2" >STOP</button>
             </div>
             <div class="row colrow">
-                <button class="btn col-md-3 btn-info relay" data-screendown="1" id="dispLPROJSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info relay" data-screendown="2" id="dispRPROJSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info relay" data-blinddown="1" id="dispLWINSCRDOWN" >DOWN</button>
-                <button class="btn col-md-3 btn-info relay" data-blinddown="2" id="dispRWINSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info screen" data-screendown="1" id="dispLPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info screen" data-screendown="2" id="dispRPROJSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info blind" data-blinddown="1" id="dispLWINSCRDOWN" >DOWN</button>
+                <button class="btn col-md-3 btn-info blind" data-blinddown="2" id="dispRWINSCRDOWN" >DOWN</button>
             </div>
         </div>
     </div>
 
-    <div id="pageVideoRouting" class="container-fluid">
+    <div id="pageVideoRouting" class="container-fluid" >
         <div class="row">
             <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
@@ -488,7 +493,7 @@
 
     </div>
 
-    <div id="pagePower" class="container-fluid">
+    <div id="pagePower" class="container-fluid" >
         <div class="row">
             <div class="btn-toolbar btn-block" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group btn-block" role="group" aria-label="Top Navigation">
@@ -600,16 +605,16 @@
         </div>
     </div>
 
-    <div id="pageLights" class="container-fluid">
+    <div id="pageLights" class="container-fluid" >
         <div class="row colrow">
-            <button class="btn btn-success col-md-4 relay" data-relaybutton="3" >ALL ON</button>
-            <button class="btn btn-danger col-md-4 relay" data-relaybutton="4" >ALL OFF</button>
-            <button class="btn btn-warning col-md-4 relay" data-relaybutton="1,2" >Full DIM</button>
+            <button class="btn btn-success col-md-4 light" data-relaybutton="3" >ALL ON</button>
+            <button class="btn btn-danger col-md-4 light" data-relaybutton="4" >ALL OFF</button>
+            <button class="btn btn-warning col-md-4 light" data-relaybutton="1,2" >Full DIM</button>
         </div>
         <div class="row colrow">
-            <button class="btn btn-info col-md-3 relay" data-relaybutton="2" >Front Dim</button>
-            <button class="btn btn-info col-md-3 relay" data-relaybutton="1" >Back Dim</button>
-			<button class="btn btn-info col-md-3 relay" data-relaybutton="5" >Mezzanine</button>
+            <button class="btn btn-info col-md-3 light" data-relaybutton="2" >Front Dim</button>
+            <button class="btn btn-info col-md-3 light" data-relaybutton="1" >Back Dim</button>
+			<button class="btn btn-info col-md-3 light" data-relaybutton="5" >Mezzanine</button>
         </div>
     </div>
 
@@ -1519,8 +1524,9 @@
             console.log(client.apis);
             NodeRedAPI = client.apis;
         });
+        var AVControlWeb = angular.module('AVControlWeb', []);
 
-        angular.module('AVControlWeb', []).controller('VCWSController', function ($scope, $http, $interval, $q) {
+        AVControlWeb.controller('VCWSController', function ($scope, $http, $interval, $q) {
 
             angular.extend($scope,{ menudisplay: 
                 {
@@ -1900,7 +1906,9 @@
                 }
             });
 
-            //global objects
+            //global object
+            
+
             function initData() {
                 
                 $scope.devices = {
@@ -1986,20 +1994,11 @@
                 Screen_Cmd.STOP = new StatusObj("STOP","blind/stop","Screen Stop");
                 angular.extend($scope,{Screen_Cmd:Screen_Cmd});
 
-                var Lights_Cmd = new DeviceStatusObj();
-                Lights_Cmd.MEZZANINE = new StatusObj("MEZZANINE","button/5","Mezzanine");
-                Lights_Cmd.ALLOFF = new StatusObj("ALLOFF","button/4","All Lights Off");
-                Lights_Cmd.ALLON = new StatusObj("ALLON","button/3","All Lights On");
-                Lights_Cmd.FRONTDIM = new StatusObj("FRONTDIM","button/2","Front House Dim");
-                Lights_Cmd.BACKDIM = new StatusObj("BACKDIM","button/1","Front House Dim");
-                angular.extend($scope,{Lights_Cmd:Lights_Cmd});
-
                 var Furman_Cmd = new DeviceStatusObj();
                 Furman_Cmd.POWERON = new StatusObj("POWERON","poweron","Power On");
                 Furman_Cmd.POWEROFF = new StatusObj("POWEROFF","poweroff","Power Off");
                 Furman_Cmd.BANKON = new StatusObj("BANKON","bankon","Bank On");
                 Furman_Cmd.BANKOFF = new StatusObj("BANKOFF","bankoff","Bank Off");
-                
                 angular.extend($scope,{Furman_Cmd:Furman_Cmd});
 
             }
@@ -2110,7 +2109,7 @@
                     });
 
                     //set relay button click function
-                    $("button.relay").click(function(){
+                    $("button.light").click(function(){
                         if ($(this).data("relaybutton")!=undefined) {
                             if (isNaN($(this).data("relaybutton"))) {
                                 NodeRedAPI.relay.button({port:$(this).data("relaybutton")});
@@ -2120,7 +2119,12 @@
                                     sleep(500);
                                 });
                             }
-                        } else if ($(this).data("screenup")!=undefined) {
+                        }
+                    });
+
+                    //set screen buttons click function
+                    $("button.screen").click(function(){
+                        if ($(this).data("screenup")!=undefined) {
                             if (isNaN($(this).data("screenup"))) {
                                 NodeRedAPI.relay.screenup({screenid:$(this).data("screenup")});
                             } else {
@@ -2147,7 +2151,12 @@
                                     sleep(500);
                                 });
                             }
-                        } else if ($(this).data("blindup")!=undefined) {
+                        }
+                    });
+
+                    //set blinds button click function
+                    $("button.blind").click(function(){
+                        if ($(this).data("blindup")!=undefined) {
                             if (isNaN($(this).data("blindup"))) {
                                 NodeRedAPI.relay.blindup({blindid:$(this).data("blindup")});
                             } else {
