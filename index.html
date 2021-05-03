@@ -1650,15 +1650,6 @@
 
                 function initData() {
                     
-                    $scope.devices = {
-                        BlackMagic:{deviceName:"videohub"},
-                        ProjLEFT:{deviceName:"epson",channelName:"1"},
-                        ProjRIGHT:{deviceName:"epson",channelName:"2"},
-                        FURMAN_SEQ:{deviceName:"furman"},
-                        ScreenControl:{deviceName:"relay"},
-                        HoobsControl:{deviceName:"hoobs"}
-                    };
-                    
                     var Furman_Power_Status = new DeviceStatusObj(); 
                     Furman_Power_Status.POWER_OFF = new StatusObj("POWER_OFF","OK","Power Off");
                     Furman_Power_Status.POWER_UPSEQ = new StatusObj("POWER_UPSEQ","1","Power Up Sequence");
@@ -1732,13 +1723,6 @@
                     Screen_Cmd.DOWN = new StatusObj("DOWN","blind/down","Screen Down");
                     Screen_Cmd.STOP = new StatusObj("STOP","blind/stop","Screen Stop");
                     angular.extend($scope,{Screen_Cmd:Screen_Cmd});
-
-                    var Furman_Cmd = new DeviceStatusObj();
-                    Furman_Cmd.POWERON = new StatusObj("POWERON","poweron","Power On");
-                    Furman_Cmd.POWEROFF = new StatusObj("POWEROFF","poweroff","Power Off");
-                    Furman_Cmd.BANKON = new StatusObj("BANKON","bankon","Bank On");
-                    Furman_Cmd.BANKOFF = new StatusObj("BANKOFF","bankoff","Bank Off");
-                    angular.extend($scope,{Furman_Cmd:Furman_Cmd});
 
                 }
                 initData();
@@ -2086,11 +2070,11 @@
                         } else if ($(this).data("videodest")!=undefined) {
                             NodeRedAPI.videohub.setRoute({
                                 dest:$(this).data("videodest"),
-                                src:Video_Input.getCodebyName(videosrc)
+                                src:$scope.Video_Input.getCodebyName(videosrc)
                             });
-                        } else if ($(this).data("videogroup")!=undefined) {
+                        } else if ($(this).data("videodestgroup")!=undefined) {
                             NodeRedAPI.videohub.displayPreset({
-                                preset:videosrc+$(this).data("videogroup")
+                                preset:videosrc.toLowerCase()+$(this).data("videodestgroup")
                             });
                         }
                     });
@@ -2100,32 +2084,35 @@
                 $scope.BGTask = null;
 
                 $scope.show=function() {
-                    console.log($scope.id + " show function");
-                    $scope.BGTask = $scope.getVideoRoutingStatus();
+                    $scope.BGTask = true;
+                    $scope.getVideoRoutingStatus();
                 }
 
                 $scope.hide=function() {
-                    $interval.cancel($scope.BGTask);
-                    $scope.BGTask = null;
+                    $scope.BGTask = false;
                 }
 
                 $scope.getVideoRoutingStatus = function() {
-                    return $interval(function(){
-                        $scope.VControlWS.scrGetGlobalVar("STATUS_VIDEOHUB").then(function(response){
-                            var routingdata = response.data.split(",");
-                            if ((routingdata.length-1)==12) {
-                                //reset buttons
-                                $("button[id*='route']").removeClass("btn-warning");
-                                for (var i=0; i<(routingdata.length-1);i++) {
-                                    var route = routingdata[i].split(" ");
-                                    if (route.length==2) {
-                                        $("#route"+$scope.Video_Input.getNamebyCode(route[1])+$scope.Video_Output.getNamebyCode(route[0]))
-                                        .addClass("btn-warning");
-                                    }
-                                }    
-                            } 
-                        });
-                    },300);
+                    NodeRedAPI.videohub.getRouting()
+                    .then((res)=>{
+                        var routingdata = res.data.split("\n");
+                        if (routingdata.length>1 && routingdata[0].trim()=="VIDEO OUTPUT ROUTING:") {
+                            //reset buttons
+                            $("button[id*='route']").removeClass("btn-warning");
+                            for (var i=0; i<(routingdata.length-1);i++) {
+                                var route = routingdata[i].trim().split(" ");
+                                if (route.length==2) {
+                                    $("#route"+$scope.Video_Input.getNamebyCode(route[1])+$scope.Video_Output.getNamebyCode(route[0]))
+                                    .addClass("btn-warning");
+                                }
+                            }    
+                        } 
+                        sleep(1000);
+                        
+                        if ($scope.BGTask) {
+                            $scope.getVideoRoutingStatus();
+                        }
+                    });
                 }
 
             });
